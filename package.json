@@ -1,0 +1,23 @@
+{
+  "name": "parking-lot-management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TinLite/tran-thanh-dep-trai.git"
+  },
+  "author": "TinLite, QuangTeoo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TinLite/tran-thanh-dep-trai/issues"
+  },
+  "homepage": "https://github.com/TinLite/tran-thanh-dep-trai#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
