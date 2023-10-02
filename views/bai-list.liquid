@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="./dist/style.css">
+    </head>
+
+    <body class="bg-slate-200">
+        <div class="container mx-auto p-4 max-w-2xl">
+            <button onclick="history.back()" class="">&LeftAngleBracket; Trở về</button>
+            <div class="flex border-b-2 border-gray-900 border-solid mb-2 justify-between">
+                <div class="text-xl py-2">Danh sách bãi</div>
+                <button class="bg-black text-white py-2 px-4 self-center">Thêm bãi mới</button>
+            </div>
+            <div>
+                <div id="search-container">
+                    <form
+                        action=""
+                        method="get"
+                        class="flex">
+                        <input
+                            type="search"
+                            id="search-input"
+                            class="flex-auto rounded-tl-lg"
+                            placeholder="Nhập thông tin cần tìm...">
+                        <select
+                            name=""
+                            id=""
+                            class="">
+                            <option value="">Mã bãi</option>
+                            <option value="">Tên bãi</option>
+                            <option value="">Vị trí</option>
+                        </select>
+                        <button type="submit" class="bg-black text-white py-2 px-4 rounded-tr-lg">Tìm kiếm</button>
+                    </form>
+                </div>
+            </div>
+            <table class="border-collapse border w-full text-center">
+                <thead class="bg-gray-100 border-b border-gray-300 pt-4">
+                    <tr class="">
+                        <th class="">Mã bãi</th>
+                        <th class="">Tên bãi</th>
+                        <th class="">Vị trí</th>
+                        <th class="">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-300">
+                    {% for bai in danhsachbai %}
+                        <tr class="hover:bg-slate-100">
+                            <td>{{ bai.Mabai }}</td>
+                            <td>{{ bai.Tenbai }}</td>
+                            <td>{{ bai.Vitri }}</td>
+                            <td class="inline-flex rounded-md shadow-sm divide-x-2">
+                                <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-l-lg">Xem chi tiết</a>
+                                <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200">Sửa</a>
+                                <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-r-lg">Xoá</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr class="bg-slate-100">
+                            <td colspan="3">{{ "Không tìm thấy phiếu xe nào." }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+
+</html>
