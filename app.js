@@ -19,11 +19,13 @@ app.use(express.urlencoded({ extended: true })); // Support encoded bodies like 
 // Routes
 const phieuxeRoute = require('./routes/phieuxe.route')
 const baixeRoute = require('./routes/baixe.route')
-const xeRoute = require('./routes/xe.route');
+const xeRoute = require('./routes/xe.route')
+const nhanxeRoute = require('./routes/nhanxe.route');
 
 app.use("/phieuxe", phieuxeRoute)
 app.use("/baixe", baixeRoute)
 app.use("/xe", xeRoute)
+app.use("/nhanxe", nhanxeRoute)
 
 app.get('/', (req, res) => {
   res.send("It's worked!")
