@@ -11,8 +11,11 @@ router.get('/danhsach/', (req, res) => {
     pool.query(
         'SELECT * FROM `Bai`',
         function (err, results) {
-            console.log(req.query)
-            res.render('bai-list', { danhsachbai: results, success: (req.query.dataSuccess || false), req: req });
+            if (err) {
+                console.error(err);
+            } else {
+                res.render('bai-list', { danhsachbai: results, success: (req.query.dataSuccess || false), req: req });
+            }
         }
     );
 })

@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-image: url(../parking-space-1487891.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    position: relative;
+}
+a{
+    text-decoration: none;
+}
+li :hover{
+    background-color:#6499E9;
+    color: #9eddff
+}
+ul{
+    background-color:black;
+    list-style: none;
+    display: flex;
+    justify-content: right;
+    position: fixed;
+    width: 100%;
+} 
+li{
+    float:left;
+}
+li a {
+    display:inline-block;
+    text-align: center;
+    padding: 14px 16px;
+    color: white;
+}
+.drop-down{
+    display:inline-block;   
+}
+.dropdown-content{
+    display: none;
+    position: absolute;
+    background-color: #6499E9;
+}
+.dropdown-content a{
+    display: block;
+    text-align: left;
+    color:#6499E9;
+}
+.dropdown-content a:hover{
+    background-color: #9eddff;
+}
+.drop-down:hover .dropdown-content{
+    display: block;
+}
+.imglogo{
+    margin-left:300px ;
+    max-width: 130px;
+    height: auto;
+    border-radius: 50%;
+}
+.content{
+    text-align: left;
+    color: white;
+    top: 200px;
+    left:100px;
+    float: left;
+}
+.dropdown-content>a{
+    color: white;
+}
+.slogan{
+    position: fixed;
+    top:15px;
+    left: 220px;
+    color: white;
+    font-size: 20px;
+    font-family:Arial, Helvetica, sans-serif;
+    letter-spacing: 6px;
+}
+.foot{
+    position:fixed;
+    text-align: center;
+    padding: 3px;
+    background-color: white;
+    color: black;
+    bottom: 0;
+    width: 100%;
+}
+/* .content{
+    border: 3px;
+    width: 17%;
+    padding: 30px;
+    font-size: 20px;
+    line-height:1.5;
+    margin-top: 27px;
+    text-align: justify;
+} */
