@@ -25,7 +25,7 @@ const nhanxeRoute = require('./routes/nhanxe.route');
 app.use("/phieuxe", phieuxeRoute)
 app.use("/baixe", baixeRoute)
 app.use("/xe", xeRoute)
-app.use("/nhanxe", nhanxeRoute)
+app.use("/nhanxe", nhanxeRoute);
 
 app.get('/', (req, res) => {
   res.send("It's worked!")
