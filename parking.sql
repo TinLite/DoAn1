@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2023 at 04:26 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Oct 05, 2023 at 06:05 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,10 +28,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `bai` (
-  `Mabai` varchar(10) NOT NULL,
-  `Tenbai` varchar(20) DEFAULT NULL,
-  `Vitri` varchar(15) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Mabai` int(11) NOT NULL,
+  `Tenbai` varchar(50) DEFAULT NULL,
+  `Vitri` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -40,11 +40,12 @@ CREATE TABLE `bai` (
 --
 
 CREATE TABLE `gui` (
-  `Phieu` varchar(10) DEFAULT NULL,
-  `Soxe` varchar(6) DEFAULT NULL,
-  `Thoigianvao` timestamp NULL DEFAULT NULL,
+  `ID` int(11) NOT NULL,
+  `Phieu` int(11) DEFAULT NULL,
+  `Soxe` char(10) DEFAULT NULL,
+  `Thoigianvao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `Thoigianra` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -53,9 +54,9 @@ CREATE TABLE `gui` (
 --
 
 CREATE TABLE `phieuxe` (
-  `Phieu` varchar(10) NOT NULL,
-  `Mabai` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Phieu` int(11) NOT NULL,
+  `Mabai` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -64,9 +65,10 @@ CREATE TABLE `phieuxe` (
 --
 
 CREATE TABLE `xe` (
-  `Soxe` varchar(6) NOT NULL,
-  `Mauxe` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Soxe` char(10) NOT NULL,
+  `Mauxe` varchar(20) DEFAULT NULL,
+  `Hinhanh` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Indexes for dumped tables
@@ -82,21 +84,44 @@ ALTER TABLE `bai`
 -- Indexes for table `gui`
 --
 ALTER TABLE `gui`
-  ADD KEY `FK_Xe` (`Soxe`),
-  ADD KEY `FK_phieu` (`Phieu`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `Phieu` (`Phieu`),
+  ADD KEY `Soxe` (`Soxe`);
 
 --
 -- Indexes for table `phieuxe`
 --
 ALTER TABLE `phieuxe`
   ADD PRIMARY KEY (`Phieu`),
-  ADD KEY `FK_Bai` (`Mabai`);
+  ADD KEY `Mabai` (`Mabai`);
 
 --
 -- Indexes for table `xe`
 --
 ALTER TABLE `xe`
   ADD PRIMARY KEY (`Soxe`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `bai`
+--
+ALTER TABLE `bai`
+  MODIFY `Mabai` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `gui`
+--
+ALTER TABLE `gui`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `phieuxe`
+--
+ALTER TABLE `phieuxe`
+  MODIFY `Phieu` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -106,14 +131,14 @@ ALTER TABLE `xe`
 -- Constraints for table `gui`
 --
 ALTER TABLE `gui`
-  ADD CONSTRAINT `FK_Xe` FOREIGN KEY (`Soxe`) REFERENCES `xe` (`Soxe`),
-  ADD CONSTRAINT `FK_phieu` FOREIGN KEY (`Phieu`) REFERENCES `phieuxe` (`Phieu`);
+  ADD CONSTRAINT `gui_ibfk_1` FOREIGN KEY (`Phieu`) REFERENCES `phieuxe` (`Phieu`),
+  ADD CONSTRAINT `gui_ibfk_2` FOREIGN KEY (`Soxe`) REFERENCES `xe` (`Soxe`);
 
 --
 -- Constraints for table `phieuxe`
 --
 ALTER TABLE `phieuxe`
-  ADD CONSTRAINT `FK_Bai` FOREIGN KEY (`Mabai`) REFERENCES `bai` (`Mabai`);
+  ADD CONSTRAINT `phieuxe_ibfk_1` FOREIGN KEY (`Mabai`) REFERENCES `bai` (`Mabai`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
