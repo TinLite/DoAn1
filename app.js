@@ -39,5 +39,5 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(port, () => {
-  console.log(`May chu dang chay tren cong ${port}`)
+  console.log(`May chu dang chay tai http://localhost:${port}`)
 })
