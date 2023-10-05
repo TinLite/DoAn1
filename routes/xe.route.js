@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
     pool.query(
         'SELECT * FROM `Xe`',
         function (err, results) {
-            res.render('xe-list', {danhsachbai: results});
+            res.render('xe-list', {danhsachxe: results});
         }
     );
 })
