@@ -32,10 +32,6 @@ app.use("/baixe", baixeRoute)
 app.use("/xe", xeRoute)
 app.use("/nhanxe", nhanxeRoute);
 
-app.get('/', (req, res) => {
-  res.send("It's worked!")
-})
-
 // // Project wide error handling
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
