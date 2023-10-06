@@ -89,8 +89,8 @@
                             <td>{{ bai.Tenbai }}</td>
                             <td>{{ bai.Vitri }}</td>
                             <td class="inline-flex rounded-md shadow-sm divide-x-2">
-                                <a href="detail/{{ bai.Mabai }}" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-l-lg">Xem chi tiết</a>
-                                <a href="detail/{{ bai.Mabai }}" class="bg-white px-4 py-2 hover:bg-gray-200">Sửa</a>
+                                <a href="{{ req.baseUrl }}/detail/{{ bai.Mabai }}" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-l-lg">Xem chi tiết</a>
+                                <a href="{{ req.baseUrl }}/detail/{{ bai.Mabai }}" class="bg-white px-4 py-2 hover:bg-gray-200">Sửa</a>
                                 <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-r-lg">Xoá</a>
                             </td>
                         </tr>
