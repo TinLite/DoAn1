@@ -7,7 +7,7 @@ const baixeModel = require('../models/baixe.model')
  * Danh sách bãi
  */
 function list(req, res) {
-    baixeModel.getList((list) => {
+    baixeModel.getAll((list) => {
         res.render('bai-list', { danhsachbai: list, success: (req.query.dataSuccess || req.success || false), req: req });
     })
 }
@@ -45,13 +45,13 @@ function detail(req, res) {
         httpcat(res, 400)
     } else {
         pool.execute(
-            'SELECT * FROM `Bai` WHERE `mabai` = ?', // Nó sẽ dùng các phần tử trong mảng ở dưới thay thế vào hỏi chấm ở trên
+            'SELECT * FROM `Bai` WHERE `mabai` = ?',
             [mabai],
             function (err, results, fields) {
                 if (results.length == 0) {
                     httpcat(res, 204)
                 } else {
-                    res.render("bai-edit", results[0])
+                    res.render("bai-edit", {data: results[0], err: req.err})
                 }
             }
         )
@@ -63,12 +63,15 @@ function detail(req, res) {
  * Cập nhật bãi
  */
 function update(req, res) {
+    var mabai = parseInt(req.params.mabai.trim())
     var formData = req.body;
     pool.execute('UPDATE `bai` SET `Tenbai` = ?, `Vitri` = ? Where `Mabai` = ?',
-        [formData.tenbai, formData.vitri, formData.mabai],
+        [formData.tenbai, formData.vitri, mabai],
         function (err, results, fields) {
-            if (results.length == 0) {
-                httpcat(res, 400)
+            // TODO fix err handling implementation here
+            if (err) {
+                console.error(err)
+                httpcat(res, 500)
             } else {
                 req.success = true
                 list(req, res)

@@ -1,7 +1,7 @@
 const { pool } = require('../services/mysql')
 
 
-function getList(callback) {
+function getAll(callback) {
     pool.query(
         'SELECT * FROM `Bai`',
         function (err, results) {
@@ -11,5 +11,5 @@ function getList(callback) {
 }
 
 module.exports = {
-    getList
+    getAll
 }
