@@ -12,7 +12,7 @@ function list(req, res) {
             if (err) {
                 console.error(err);
             } else {
-                res.render('bai-list', { danhsachbai: results, success: (req.query.dataSuccess || false), req: req });
+                res.render('bai-list', { danhsachbai: results, success: (req.query.dataSuccess || req.success || false), req: req });
             }
         }
     );
@@ -33,7 +33,7 @@ function insert(req, res) {
                 if (err) { // Nếu database báo lỗi thì show lỗi ra
                     res.render("bai-list", { err: err.message, body: formData })
                 } else { // Ngược lại, redirect về trang chính
-                    req.query["dataSuccess"] = true
+                    req.success = true
                     list(req, res)
                 }
             }
@@ -69,9 +69,20 @@ function detail(req, res) {
  * Cập nhật bãi
  */
 function update(req, res) {
-    
+    console.log(req.body)
+    var formData = req.body;
+    pool.execute('UPDATE `bai` SET `Tenbai` = ?, `Vitri` = ? Where `Mabai` = ?',
+    [formData.tenbai, formData.vitri, formData.mabai],
+    function (err, results,fields){
+        if(results.length==0){
+            httpcat(res, 400)
+        } else{
+            req.success = true
+            list(req, res)
+        }
+    }
+    )
 }
-
 module.exports = {
     list,
     insert,

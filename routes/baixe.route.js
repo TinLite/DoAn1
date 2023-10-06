@@ -8,6 +8,6 @@ router.get('/', baixeController.list)
 
 router.post('/', baixeController.insert)
 
-router.route("/detail/:mabai?").get(baixeController.detail)
+router.route("/detail/:mabai?").get(baixeController.detail).post(baixeController.update)
 
 module.exports = router
