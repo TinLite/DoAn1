@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="/dist/style.css">
+    </head>
+
+    <body class="bg-slate-200">
+        {% if err %}
+            <div class="text-center py-4 bg-rose-600 text-white text-2xl">{{ err }}</div>
+        {% endif %}
+        {% if success %}
+            <div class="text-center py-4 bg-white text-2xl">Cập nhật dữ liệu thành công.</div>
+        {% endif %}
+        <div class="container mx-auto p-4 max-w-2xl">
+            <a href="{{ req.baseUrl }}" class="pb-2">&LeftAngleBracket; Trở về</a>
+            <div class="flex justify-between pt-2 border-b-2 border-gray-900 border-solid items-center">
+                <div class="text-xl">Thông tin phiếu</div>
+                <button class="px-4 py-2 bg-rose-600 text-white" onclick="console.log()">Xoá phiếu</button>
+            </div>
+            <form
+                action=""
+                method="post"
+                class="grid grid-cols-1"
+                id="car-detail">
+                <label for="phieu">Mã phiếu</label>
+                <input
+                    type="text"
+                    name="phieu"
+                    id="phieu"
+                    placeholder="00X00000"
+                    value="{{ maphieu }}"
+                    disabled>
+                <label for="mabai">Bãi trực thuộc</label>
+                <select
+                    name="mabai"
+                    id="mabai"
+                    class="">
+                    {% for bai in danhsachbai %}
+                        <option {% if phieu.Mabai == bai.Mabai %}selected{% endif %} value="{{ bai.Mabai }}">{{ bai.Mabai }}. {{ bai.Tenbai }} - {{ bai.Vitri }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <div class="submit-container">
+                    <button type="submit" class="block m-auto bg-black text-white px-4 py-2 rounded-lg">Cập
+                        nhật phiếu xe</button>
+                </div>
+            </form>
+            <div class="text-xl py-2 border-b-2 border-gray-900 border-solid">Lịch sử phiếu xe</div>
+            <table class="border-collapse border w-full text-center">
+                <thead class="bg-gray-100 border-b border-gray-300 pt-4">
+                    <tr class="">
+                        <th class="">Biển số xe</th>
+                        <th class="">Mẫu xe</th>
+                        <th class="">Thời gian vào</th>
+                        <th class="">Thời gian ra</th>
+                        <th class=""></th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-300">
+                    <tr class="hover:bg-slate-100">
+                        <td>123456</td>
+                        <td>Honda</td>
+                        <td>13:05</td>
+                        <td>14:01</td>
+                        <td class="inline-flex rounded-md shadow-sm divide-x-2">
+                            <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-lg">Xem thông tin xe</a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-100">
+                        <td>251575</td>
+                        <td>Suzuki</td>
+                        <td>14:35</td>
+                        <td>16:02</td>
+                        <td class="inline-flex rounded-md shadow-sm divide-x-2">
+                            <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-lg">Xem thông tin xe</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

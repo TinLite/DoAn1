@@ -1,14 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const { pool } = require('../services/mysql')
+const phieuxeController = require('../controllers/phieuxe.controller')
 
-router.get('/', (req, res) => {
-    pool.query(
-        'SELECT * FROM `Phieuxe`',
-        function (err, results) {
-            res.render('phieu-list', {danhsachphieu: results});
-        }
-    );
-})
+router.get('/', phieuxeController.list)
+
+router.route('/detail/:maphieu?')
+    .get(phieuxeController.detail)
+    .post(phieuxeController.update)
 
 module.exports = router
