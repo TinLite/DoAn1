@@ -1,14 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const { pool } = require('../services/mysql')
+const xecontroller = require('../controllers/xe.controller')
 
-router.get('/', (req, res) => {
-    pool.query(
-        'SELECT * FROM `Xe`',
-        function (err, results) {
-            res.render('xe-list', {danhsachxe: results});
-        }
-    );
-})
+router.get('/', xecontroller.list)
+
+router.post('/',xecontroller.insert)
+
+router.route("/detail/:soxe?").get(xecontroller.detail)
+router.post("/detail/:soxe?", xecontroller.update)
 
 module.exports = router
