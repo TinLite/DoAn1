@@ -16,6 +16,11 @@ app.use(express.static('public'))
 // app.use(bodyParser.json())
 app.use(express.urlencoded({ extended: true })); // Support encoded bodies like form and stuff
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.ip} ${req.originalUrl}`)
+  next()
+})
+
 // Routes
 const phieuxeRoute = require('./routes/phieuxe.route')
 const baixeRoute = require('./routes/baixe.route')
