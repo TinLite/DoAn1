@@ -1,21 +1,15 @@
 const { pool } = require('../services/mysql')
 const httpcat = require('../services/httpcat')
+const baixeModel = require('../models/baixe.model')
 
 /**
  * GET /
  * Danh sách bãi
  */
 function list(req, res) {
-    pool.query(
-        'SELECT * FROM `Bai`',
-        function (err, results) {
-            if (err) {
-                console.error(err);
-            } else {
-                res.render('bai-list', { danhsachbai: results, success: (req.query.dataSuccess || req.success || false), req: req });
-            }
-        }
-    );
+    baixeModel.getList((list) => {
+        res.render('bai-list', { danhsachbai: list, success: (req.query.dataSuccess || req.success || false), req: req });
+    })
 }
 
 /**
@@ -72,15 +66,15 @@ function update(req, res) {
     console.log(req.body)
     var formData = req.body;
     pool.execute('UPDATE `bai` SET `Tenbai` = ?, `Vitri` = ? Where `Mabai` = ?',
-    [formData.tenbai, formData.vitri, formData.mabai],
-    function (err, results,fields){
-        if(results.length==0){
-            httpcat(res, 400)
-        } else{
-            req.success = true
-            list(req, res)
+        [formData.tenbai, formData.vitri, formData.mabai],
+        function (err, results, fields) {
+            if (results.length == 0) {
+                httpcat(res, 400)
+            } else {
+                req.success = true
+                list(req, res)
+            }
         }
-    }
     )
 }
 module.exports = {
