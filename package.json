@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TinLite/tran-thanh-dep-trai.git"
+    "url": "git+https://github.com/TinLite/DoAn1.git"
   },
   "author": "TinLite, QuangTeoo",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TinLite/tran-thanh-dep-trai/issues"
+    "url": "https://github.com/TinLite/DoAn1/issues"
   },
-  "homepage": "https://github.com/TinLite/tran-thanh-dep-trai#readme",
+  "homepage": "https://github.com/TinLite/DoAn1#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
     "dotenv": "^16.3.1",
