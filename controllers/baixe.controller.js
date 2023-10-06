@@ -63,7 +63,6 @@ function detail(req, res) {
  * Cập nhật bãi
  */
 function update(req, res) {
-    console.log(req.body)
     var formData = req.body;
     pool.execute('UPDATE `bai` SET `Tenbai` = ?, `Vitri` = ? Where `Mabai` = ?',
         [formData.tenbai, formData.vitri, formData.mabai],
