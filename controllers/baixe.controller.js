@@ -45,7 +45,7 @@ function detail(req, res) {
         httpcat(res, 400)
     } else {
         pool.execute(
-            'SELECT * FROM `Bai` WHERE `mabai` = ?',
+            'SELECT * FROM `Bai` WHERE `mabai` = ? AND Trangthai = true',
             [mabai],
             function (err, results, fields) {
                 if (results.length == 0) {
@@ -65,7 +65,7 @@ function detail(req, res) {
 function update(req, res) {
     var mabai = parseInt(req.params.mabai.trim())
     var formData = req.body;
-    pool.execute('UPDATE `bai` SET `Tenbai` = ?, `Vitri` = ? Where `Mabai` = ?',
+    pool.execute('UPDATE `bai` SET `Tenbai` = ?, `Vitri` = ? WHERE `Mabai` = ?',
         [formData.tenbai, formData.vitri, mabai],
         function (err, results, fields) {
             // TODO fix err handling implementation here
