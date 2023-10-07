@@ -21,9 +21,8 @@ function insert(req, res) {
     if (formData.tenbai.trim().length == 0) {
         res.render("bai-list", { err: "Tên bãi không được để trống", body: formData })
     } else {
-        pool.execute("INSERT INTO `bai` (`Tenbai`,`Vitri`) VALUES (?, ?)", // Như trên, ở đây có 3 dấu ? thì nó sẽ lấy lần lượt 3 phần tử thay vào
-            [formData.tenbai, formData.vitri],
-            function (err, results, fields) {
+        baixeModel.insert(formData,
+            function (err) {
                 if (err) { // Nếu database báo lỗi thì show lỗi ra
                     res.render("bai-list", { err: err.message, body: formData })
                 } else { // Ngược lại, redirect về trang chính
@@ -44,14 +43,15 @@ function detail(req, res) {
     if (!mabai) {
         httpcat(res, 400)
     } else {
-        pool.execute(
-            'SELECT * FROM `Bai` WHERE `mabai` = ? AND Trangthai = true',
-            [mabai],
-            function (err, results, fields) {
+        baixeModel.getOne(mabai,
+            function (err, results) {
                 if (results.length == 0) {
-                    httpcat(res, 204)
+                    httpcat(res, 404)
+                } else if (err) {
+                    console.error(err)
+                    httpcat(res, 500)
                 } else {
-                    res.render("bai-edit", {data: results[0], err: req.err})
+                    res.render("bai-edit", { data: results[0], err: req.err })
                 }
             }
         )
@@ -65,9 +65,8 @@ function detail(req, res) {
 function update(req, res) {
     var mabai = parseInt(req.params.mabai.trim())
     var formData = req.body;
-    pool.execute('UPDATE `bai` SET `Tenbai` = ?, `Vitri` = ? WHERE `Mabai` = ?',
-        [formData.tenbai, formData.vitri, mabai],
-        function (err, results, fields) {
+    baixeModel.update(mabai, formData,
+        function (err) {
             // TODO fix err handling implementation here
             if (err) {
                 console.error(err)
@@ -82,14 +81,15 @@ function update(req, res) {
 
 function remove(req, res) {
     var mabai = parseInt(req.params.mabai.trim())
-    pool.execute('UPDATE `bai` SET `Trangthai` = false WHERE `Mabai` = ?',
-        [mabai],
-        function (err, results, fields) {
+    baixeModel.remove(mabai,
+        function (err, results) {
             // TODO fix err handling implementation here
             console.log(results.info)
             if (err) {
                 console.error(err)
                 httpcat(res, 500)
+            } else if (results.affectedRows == 0) {
+                httpcat(res, 404)
             } else {
                 req.success = true
                 list(req, res)
@@ -97,6 +97,7 @@ function remove(req, res) {
         }
     )
 }
+
 module.exports = {
     list,
     insert,
