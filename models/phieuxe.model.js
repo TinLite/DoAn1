@@ -3,7 +3,7 @@ const { pool } = require('../services/mysql')
 
 function getAll(callback) {
     pool.query(
-        'SELECT * FROM `Phieuxe WHERE `Trangthai` = true`',
+        'SELECT * FROM `Phieuxe WHERE `Trangthai` = true` LIMIT 5',
         function (err, results) {
             callback(results)
         }
