@@ -91,7 +91,7 @@
                             <td class="inline-flex rounded-md shadow-sm divide-x-2">
                                 <a href="{{ req.baseUrl }}/detail/{{ bai.Mabai }}" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-l-lg">Xem chi tiết</a>
                                 <a href="{{ req.baseUrl }}/detail/{{ bai.Mabai }}" class="bg-white px-4 py-2 hover:bg-gray-200">Sửa</a>
-                                <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-r-lg">Xoá</a>
+                                <button onclick="promptDelete('{{ req.baseUrl }}/detail/{{ bai.Mabai }}/delete', '{{ bai.Mabai }}. {{ bai.Tenbai }} - {{ bai.Vitri }}')" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-r-lg">Xoá</button>
                             </td>
                         </tr>
                     {% else %}
@@ -102,5 +102,30 @@
                 </tbody>
             </table>
         </div>
+        <div class="hidden transition-all fixed w-screen h-screen top-0 bg-red-700 bg-opacity-80 flex justify-center" id="delete-prompt">
+            <div class="p-4 max-w-2xl fixed top-1/2 -translate-y-1/2 w-full">
+                <div class="text-white text-4xl text-center mb-4">KHOANNNNN</div>
+                <div class="text-white text-center">Xác nhận xoá</div>
+                <div class="text-white text-center" id="delete-prompt-name"></div>
+                <div class="text-white text-center mb-4">Thao tác này sẽ không thể hoàn tác.</div>
+                <form
+                    action=""
+                    method="post"
+                    id="delete-form">
+                    <button type="submit" class="bg-white text-red-700 w-full py-2 mb-4">Chắc chắn</button>
+                </form>
+                <button onclick="deletePrompt.classList.add('hidden')" class="text-white border-white border-solid border w-full py-2">Huỷ thao tác xoá, trở về</button>
+            </div>
+        </div>
+        <script>
+            const deletePrompt = document.getElementById("delete-prompt")
+            const promptName = document.getElementById("delete-prompt-name")
+            const deleteForm = document.getElementById("delete-form")
+            function promptDelete(url, name) {
+                promptName.textContent = name;
+                deleteForm.action = url
+                deletePrompt.classList.remove("hidden");
+            }
+        </script>
     </body>
 </html>

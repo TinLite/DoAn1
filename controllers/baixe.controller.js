@@ -79,9 +79,28 @@ function update(req, res) {
         }
     )
 }
+
+function remove(req, res) {
+    var mabai = parseInt(req.params.mabai.trim())
+    pool.execute('UPDATE `bai` SET `Trangthai` = false WHERE `Mabai` = ?',
+        [mabai],
+        function (err, results, fields) {
+            // TODO fix err handling implementation here
+            console.log(results.info)
+            if (err) {
+                console.error(err)
+                httpcat(res, 500)
+            } else {
+                req.success = true
+                list(req, res)
+            }
+        }
+    )
+}
 module.exports = {
     list,
     insert,
     detail,
-    update
+    update,
+    remove
 }
