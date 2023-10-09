@@ -1,102 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <link rel="stylesheet" href="./dist/style.css">
-    </head>
-
-    <body class="bg-slate-200">
-        {% if err %}
-            <div class="text-center py-4 bg-rose-600 text-white text-2xl">{{ err }}</div>
-        {% endif %}
-        {% if success %}
-            <div class="text-center py-4 bg-white text-2xl">Cập nhật dữ liệu thành công.</div>
-        {% endif %}
-        <div class="container mx-auto p-4 max-w-2xl">
-            <button onclick="history.back()" class="">&LeftAngleBracket; Trở về</button>
-            <div class="text-xl py-2 border-b-2 border-gray-900 border-solid">Thêm xe</div>
-            <form
-                action=""
-                method="post"
-                class="grid grid-cols-1"
-                id="thembai">
-                <input
-                    type="hidden"
-                    name="mabai"
-                    id="mabai"
-                    value="{{ body.mabai }}"
-                    placeholder="1234">
-                <label for="soxe">Số xe</label>
-                <input
-                    type="text"
-                    name="soxe"
-                    id="soxe"
-                    value="{{ body.soxe }}"
-                    placeholder="65A12345">
-                <label for="mauxe">Mẫu xe</label>
-                <input
-                    type="text"
-                    name="mauxe"
-                    id="mauxe"
-                    value="{{ body.mauxe }}"
-                    placeholder="Sh150">
-                <div id="submit-container">
-                    <button type="submit" class="block m-auto bg-black text-white px-4 py-2 mt-2">Thêm</button>
-                </div>
-            </form>
-            <div class="text-xl py-2 border-b-2 border-gray-900 border-solid ">Danh sách xe</div>
-            <div>
-                <div id="search-container">
-                    <form
-                        action=""
-                        method="get"
-                        class="flex">
-                        <input
-                            type="search"
-                            id="search-input"
-                            class="flex-auto"
-                            placeholder="Tìm kiếm">
-                        <select
-                            name=""
-                            id=""
-                            class="">
-                            <option value="">Số xe</option>
-                            <option value="">Mẫu xe</option>
-                        </select>
-                        <button type="submit" class="bg-black text-white py-2 px-4 ">Tìm kiếm</button>
-                    </form>
-                </div>
+{% layout "_include/layout.liquid" %}
+{% block content %}
+    {% if err %}
+        <div class="text-center py-4 bg-rose-600 text-white text-2xl">{{ err }}</div>
+    {% endif %}
+    {% if success %}
+        <div class="text-center py-4 bg-white text-2xl">Cập nhật dữ liệu thành công.</div>
+    {% endif %}
+    <div class="container mx-auto p-4 max-w-2xl">
+        <div class="text-xl py-2 border-b-2 border-gray-900 border-solid">Thêm xe</div>
+        <form
+            action=""
+            method="post"
+            class="grid grid-cols-1"
+            id="thembai">
+            <input
+                type="hidden"
+                name="mabai"
+                id="mabai"
+                value="{{ body.mabai }}"
+                placeholder="1234">
+            <label for="soxe">Số xe</label>
+            <input
+                type="text"
+                name="soxe"
+                id="soxe"
+                value="{{ body.soxe }}"
+                placeholder="65A12345">
+            <label for="mauxe">Mẫu xe</label>
+            <input
+                type="text"
+                name="mauxe"
+                id="mauxe"
+                value="{{ body.mauxe }}"
+                placeholder="Sh150">
+            <div id="submit-container">
+                <button type="submit" class="block m-auto bg-black text-white px-4 py-2 mt-2">Thêm</button>
             </div>
-            <table class="border-collapse border w-full text-center">
-                <thead class="bg-gray-100 border-b border-gray-300 pt-4">
-                    <tr class="">
-                        <th class="">Số xe</th>
-                        <th class="">Mẫu xe</th>
-                        <th class="">Hành động</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-300">
-                    {% for xe in danhsachxe %}
-                        <tr class="hover:bg-slate-100">
-                            <td>{{ xe.Soxe }}</td>
-                            <td>{{ xe.Mauxe }}</td>
-                            <td class="inline-flex rounded-md shadow-sm divide-x-2">
-                                <a href="{{ req.baseUrl }}/detail/{{ xe.Soxe }}" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-l-lg">Xem chi tiết</a>
-                                <a href="{{ req.baseUrl }}/detail/{{ xe.Soxe }}" class="bg-white px-4 py-2 hover:bg-gray-200">Sửa</a>
-                                <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-r-lg">Xoá</a>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr class="bg-slate-100">
-                            <td colspan="3">{{ "Không tìm thấy dữ liệu xe nào." }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        </form>
+        <div class="text-xl py-2 border-b-2 border-gray-900 border-solid ">Danh sách xe</div>
+        <div>
+            <div id="search-container">
+                <form
+                    action=""
+                    method="get"
+                    class="flex">
+                    <input
+                        type="search"
+                        id="search-input"
+                        class="flex-auto"
+                        placeholder="Tìm kiếm">
+                    <select
+                        name=""
+                        id=""
+                        class="">
+                        <option value="">Số xe</option>
+                        <option value="">Mẫu xe</option>
+                    </select>
+                    <button type="submit" class="bg-black text-white py-2 px-4 ">Tìm kiếm</button>
+                </form>
+            </div>
         </div>
-    </body>
-
-</html>
+        <table class="border-collapse border w-full text-center">
+            <thead class="bg-gray-100 border-b border-gray-300 pt-4">
+                <tr class="">
+                    <th class="">Số xe</th>
+                    <th class="">Mẫu xe</th>
+                    <th class="">Hành động</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-300">
+                {% for xe in danhsachxe %}
+                    <tr class="hover:bg-slate-100">
+                        <td>{{ xe.Soxe }}</td>
+                        <td>{{ xe.Mauxe }}</td>
+                        <td class="inline-flex rounded-md shadow-sm divide-x-2">
+                            <a href="{{ req.baseUrl }}/detail/{{ xe.Soxe }}" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-l-lg">Xem chi tiết</a>
+                            <a href="{{ req.baseUrl }}/detail/{{ xe.Soxe }}" class="bg-white px-4 py-2 hover:bg-gray-200">Sửa</a>
+                            <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-r-lg">Xoá</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr class="bg-slate-100">
+                        <td colspan="3">{{ "Không tìm thấy dữ liệu xe nào." }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

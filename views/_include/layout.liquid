@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="/dist/style.css">
+    </head>
+    <body class="bg-slate-200">
+        <div class="main flex">
+            <div id="sidebar" class="bg-slate-800 max-md:hidden sticky h-screen w-64 text-white">
+                <a href="#" class="text-center block py-10 text-xl">
+                    QUẢN LÝ BÃI ĐỖ XE
+                </a>
+                <ul class="flex flex-col justify-center">
+                    <li>
+                        <a href="#" class="block py-2 px-4 my-1 hover:bg-slate-700 bg-sky-800">Nhận xe</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block py-2 px-4 my-1 hover:bg-slate-700">Quản lý phiếu</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block py-2 px-4 my-1 hover:bg-slate-700">Quản lý xe</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block py-2 px-4 my-1 hover:bg-slate-700">Quản lý bãi đỗ</a>
+                    </li>
+                </ul>
+                <div class="text-gray-500 text-center absolute bottom-0 py-4 px-5">
+                    &copy; Copyright by V-T Parking
+                </div>
+            </div>
+        {% block content %}Nội dung{% endblock %}
+        </div>
+    </body>
+</html>

@@ -21,6 +21,10 @@ app.use((req, res, next) => {
   next()
 })
 
+app.get("/", (req, res) => {
+  res.redirect("/nhanxe")
+})
+
 // Routes
 const phieuxeRoute = require('./routes/phieuxe.route')
 const baixeRoute = require('./routes/baixe.route')

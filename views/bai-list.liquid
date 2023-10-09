@@ -1,132 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <link rel="stylesheet" href="/dist/style.css">
-    </head>
-
-    <body class="bg-slate-200">
-        {% if err %}
-            <div class="text-center py-4 bg-rose-600 text-white text-2xl">{{ err }}</div>
-        {% endif %}
-        {% if success %}
-            <div class="text-center py-4 bg-white text-2xl">Cập nhật dữ liệu thành công.</div>
-        {% endif %}
-        <div class="container mx-auto p-4 max-w-2xl">
-            <a href="/" class="">&LeftAngleBracket; Trở về</a>
-            <div class="text-xl py-2 border-b-2 border-gray-900 border-solid">Thêm bãi xe</div>
+{% layout "_include/layout.liquid" %}
+{% block content %}
+    {% if err %}
+        <div class="text-center py-4 bg-rose-600 text-white text-2xl">{{ err }}</div>
+    {% endif %}
+    {% if success %}
+        <div class="text-center py-4 bg-white text-2xl">Cập nhật dữ liệu thành công.</div>
+    {% endif %}
+    <div class="container mx-auto p-4 max-w-2xl">
+        <div class="text-xl py-2 border-b-2 border-gray-900 border-solid">Thêm bãi xe</div>
+        <form
+            action=""
+            method="post"
+            autocomplete="off"
+            class="grid grid-cols-1"
+            id="thembai">
+            <input
+                type="hidden"
+                name="mabai"
+                id="mabai"
+                value="{{ body.mabai }}"
+                placeholder="1234">
+            <label for="tenbai">Tên bãi</label>
+            <input
+                type="text"
+                name="tenbai"
+                id="tenbai"
+                value="{{ body.tenbai }}"
+                placeholder="Bãi xe...">
+            <label for="vitri">Vị trí</label>
+            <input
+                type="text"
+                name="vitri"
+                id="vitri"
+                value="{{ body.vitri }}"
+                placeholder="Khu X...">
+            <div id="submit-container">
+                <button type="submit" class="block m-auto bg-black text-white px-4 py-2 mt-2">Thêm</button>
+            </div>
+        </form>
+        <div class="flex border-b-2 border-gray-900 border-solid mb-2 justify-between">
+            <div class="text-xl py-2">Danh sách bãi</div>
+        </div>
+        <div>
+            <div id="search-container">
+                <form
+                    action=""
+                    method="get"
+                    class="flex">
+                    <input
+                        type="search"
+                        id="search-input"
+                        class="flex-auto rounded-tl-lg"
+                        placeholder="Nhập thông tin cần tìm...">
+                    <select
+                        name=""
+                        id=""
+                        class="">
+                        <option value="">Mã bãi</option>
+                        <option value="">Tên bãi</option>
+                        <option value="">Vị trí</option>
+                    </select>
+                    <button type="submit" class="bg-black text-white py-2 px-4 rounded-tr-lg">Tìm kiếm</button>
+                </form>
+            </div>
+        </div>
+        <table class="border-collapse border w-full text-center">
+            <thead class="bg-gray-100 border-b border-gray-300 pt-4">
+                <tr class="">
+                    <th class="">Mã bãi</th>
+                    <th class="">Tên bãi</th>
+                    <th class="">Vị trí</th>
+                    <th class="">Hành động</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-300">
+                {% for bai in danhsachbai %}
+                    <tr class="hover:bg-slate-100">
+                        <td>{{ bai.Mabai }}</td>
+                        <td>{{ bai.Tenbai }}</td>
+                        <td>{{ bai.Vitri }}</td>
+                        <td class="inline-flex rounded-md shadow-sm divide-x-2">
+                            <a href="{{ req.baseUrl }}/detail/{{ bai.Mabai }}" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-l-lg">Xem chi tiết</a>
+                            <a href="{{ req.baseUrl }}/detail/{{ bai.Mabai }}" class="bg-white px-4 py-2 hover:bg-gray-200">Sửa</a>
+                            <button onclick="promptDelete('{{ req.baseUrl }}/detail/{{ bai.Mabai }}/delete', '{{ bai.Mabai }}. {{ bai.Tenbai }} - {{ bai.Vitri }}')" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-r-lg">Xoá</button>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr class="bg-slate-100">
+                        <td colspan="4">{{ "Không tìm thấy bãi xe nào." }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="hidden transition-all fixed w-screen h-screen top-0 bg-red-700 bg-opacity-80 flex justify-center" id="delete-prompt">
+        <div class="p-4 max-w-2xl fixed top-1/2 -translate-y-1/2 w-full">
+            <div class="text-white text-4xl text-center mb-4">KHOANNNNN</div>
+            <div class="text-white text-center">Xác nhận xoá</div>
+            <div class="text-white text-center" id="delete-prompt-name"></div>
+            <div class="text-white text-center mb-4">Thao tác này sẽ không thể hoàn tác.</div>
             <form
                 action=""
                 method="post"
-                autocomplete="off"
-                class="grid grid-cols-1"
-                id="thembai">
-                <input
-                    type="hidden"
-                    name="mabai"
-                    id="mabai"
-                    value="{{ body.mabai }}"
-                    placeholder="1234">
-                <label for="tenbai">Tên bãi</label>
-                <input
-                    type="text"
-                    name="tenbai"
-                    id="tenbai"
-                    value="{{ body.tenbai }}"
-                    placeholder="Bãi xe...">
-                <label for="vitri">Vị trí</label>
-                <input
-                    type="text"
-                    name="vitri"
-                    id="vitri"
-                    value="{{ body.vitri }}"
-                    placeholder="Khu X...">
-                <div id="submit-container">
-                    <button type="submit" class="block m-auto bg-black text-white px-4 py-2 mt-2">Thêm</button>
-                </div>
+                id="delete-form">
+                <button type="submit" class="bg-white text-red-700 w-full py-2 mb-4">Chắc chắn</button>
             </form>
-            <div class="flex border-b-2 border-gray-900 border-solid mb-2 justify-between">
-                <div class="text-xl py-2">Danh sách bãi</div>
-            </div>
-            <div>
-                <div id="search-container">
-                    <form
-                        action=""
-                        method="get"
-                        class="flex">
-                        <input
-                            type="search"
-                            id="search-input"
-                            class="flex-auto rounded-tl-lg"
-                            placeholder="Nhập thông tin cần tìm...">
-                        <select
-                            name=""
-                            id=""
-                            class="">
-                            <option value="">Mã bãi</option>
-                            <option value="">Tên bãi</option>
-                            <option value="">Vị trí</option>
-                        </select>
-                        <button type="submit" class="bg-black text-white py-2 px-4 rounded-tr-lg">Tìm kiếm</button>
-                    </form>
-                </div>
-            </div>
-            <table class="border-collapse border w-full text-center">
-                <thead class="bg-gray-100 border-b border-gray-300 pt-4">
-                    <tr class="">
-                        <th class="">Mã bãi</th>
-                        <th class="">Tên bãi</th>
-                        <th class="">Vị trí</th>
-                        <th class="">Hành động</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-300">
-                    {% for bai in danhsachbai %}
-                        <tr class="hover:bg-slate-100">
-                            <td>{{ bai.Mabai }}</td>
-                            <td>{{ bai.Tenbai }}</td>
-                            <td>{{ bai.Vitri }}</td>
-                            <td class="inline-flex rounded-md shadow-sm divide-x-2">
-                                <a href="{{ req.baseUrl }}/detail/{{ bai.Mabai }}" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-l-lg">Xem chi tiết</a>
-                                <a href="{{ req.baseUrl }}/detail/{{ bai.Mabai }}" class="bg-white px-4 py-2 hover:bg-gray-200">Sửa</a>
-                                <button onclick="promptDelete('{{ req.baseUrl }}/detail/{{ bai.Mabai }}/delete', '{{ bai.Mabai }}. {{ bai.Tenbai }} - {{ bai.Vitri }}')" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-r-lg">Xoá</button>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr class="bg-slate-100">
-                            <td colspan="4">{{ "Không tìm thấy bãi xe nào." }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <button onclick="deletePrompt.classList.add('hidden')" class="text-white border-white border-solid border w-full py-2">Huỷ thao tác xoá, trở về</button>
         </div>
-        <div class="hidden transition-all fixed w-screen h-screen top-0 bg-red-700 bg-opacity-80 flex justify-center" id="delete-prompt">
-            <div class="p-4 max-w-2xl fixed top-1/2 -translate-y-1/2 w-full">
-                <div class="text-white text-4xl text-center mb-4">KHOANNNNN</div>
-                <div class="text-white text-center">Xác nhận xoá</div>
-                <div class="text-white text-center" id="delete-prompt-name"></div>
-                <div class="text-white text-center mb-4">Thao tác này sẽ không thể hoàn tác.</div>
-                <form
-                    action=""
-                    method="post"
-                    id="delete-form">
-                    <button type="submit" class="bg-white text-red-700 w-full py-2 mb-4">Chắc chắn</button>
-                </form>
-                <button onclick="deletePrompt.classList.add('hidden')" class="text-white border-white border-solid border w-full py-2">Huỷ thao tác xoá, trở về</button>
-            </div>
-        </div>
-        <script>
-            const deletePrompt = document.getElementById("delete-prompt")
-            const promptName = document.getElementById("delete-prompt-name")
-            const deleteForm = document.getElementById("delete-form")
-            function promptDelete(url, name) {
-                promptName.textContent = name;
-                deleteForm.action = url
-                deletePrompt.classList.remove("hidden");
-            }
-        </script>
-    </body>
-</html>
+    </div>
+    <script>
+        const deletePrompt = document.getElementById("delete-prompt")
+        const promptName = document.getElementById("delete-prompt-name")
+        const deleteForm = document.getElementById("delete-form")
+        function promptDelete(url, name) {
+            promptName.textContent = name;
+            deleteForm.action = url
+            deletePrompt.classList.remove("hidden");
+        }
+    </script>
+{% endblock %}
