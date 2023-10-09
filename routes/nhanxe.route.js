@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
             if (err) {
                 console.log(err)
             } else {
-                res.render('nhanxe', { danhsachnhanxe: results })
+                res.render('nhanxe', { danhsachnhanxe: results, req: req })
             }
         }
     )
@@ -18,9 +18,9 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     var dataSent = req.body
     if (dataSent.maphieu.trim().length == 0) { // Nếu người dung k nhập mã phiếu sẽ báo lỗi
-        res.render("nhanxe", { err: "Không được phép để trống mã phiếu", body: dataSent })
+        res.render("nhanxe", { err: "Không được phép để trống mã phiếu", body: dataSent, req: req })
     } else if (dataSent.soxe.trim().length == 0) { // Nếu người dùng k nhập số xe sẽ báo lỗi
-        res.render("nhanxe", { err: "Không được phép để trống số xe", body: dataSent })
+        res.render("nhanxe", { err: "Không được phép để trống số xe", body: dataSent, req: req })
     } else {
         pool.execute('SELECT * FROM `gui` WHERE (`Phieu` = ? OR `Soxe` = ?) AND `Thoigianra` IS NULL LIMIT 1',
             [dataSent.maphieu, dataSent.soxe],
@@ -31,14 +31,14 @@ router.post('/', (req, res) => {
                         [dataSent.maphieu, dataSent.soxe],
                         function (err, results, fields) {
                             if (err) {
-                                res.render("nhanxe", { err: err.message, body: dataSent })
+                                res.render("nhanxe", { err: err.message, body: dataSent, req: req })
                             } else {
                                 res.redirect(req.baseUrl)
                             }
                         }
                     )
                 } else {
-                    res.render("nhanxe", { err: "Số xe hoặc số thẻ đã tồn tại.", body: dataSent })
+                    res.render("nhanxe", { err: "Số xe hoặc số thẻ đã tồn tại.", body: dataSent, req: req })
                 }
             })
     }

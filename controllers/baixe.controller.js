@@ -19,12 +19,12 @@ function list(req, res) {
 function insert(req, res) {
     var formData = req.body;
     if (formData.tenbai.trim().length == 0) {
-        res.render("bai-list", { err: "Tên bãi không được để trống", body: formData })
+        res.render("bai-list", { err: "Tên bãi không được để trống", body: formData, req: req })
     } else {
         baixeModel.insert(formData,
             function (err) {
                 if (err) { // Nếu database báo lỗi thì show lỗi ra
-                    res.render("bai-list", { err: err.message, body: formData })
+                    res.render("bai-list", { err: err.message, body: formData, req: req })
                 } else { // Ngược lại, redirect về trang chính
                     req.success = true
                     list(req, res)
@@ -40,6 +40,7 @@ function insert(req, res) {
  */
 function detail(req, res) {
     var mabai = parseInt(req.params.mabai.trim())
+    console.log(req.baseUrl)
     if (!mabai) {
         httpcat(res, 400)
     } else {
@@ -51,7 +52,7 @@ function detail(req, res) {
                     console.error(err)
                     httpcat(res, 500)
                 } else {
-                    res.render("bai-edit", { data: results[0], err: req.err })
+                    res.render("bai-edit", { data: results[0], err: req.err, req: req })
                 }
             }
         )
