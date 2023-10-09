@@ -12,9 +12,13 @@ function getAll(callback) {
 
 function getOne(maphieu, callback) {
     pool.execute(
-        'SELECT * FROM `Phieuxe` WHERE `Phieu` = ? AND `Trangthai` = true`',
+        'SELECT * FROM `Phieuxe` WHERE `Phieu` = ? AND `Trangthai` = true',
         [maphieu],
         function (err, results, fields) {
+            if (err) {
+                console.error(err)
+            }
+            console.log(results)
             callback(results[0])
         }
     );
