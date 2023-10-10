@@ -46,35 +46,35 @@ function insert(req, res) {
  * Xem chi tiết xe
  */
 function detail(req, res) {
-  var soxe = parseInt(req.params.soxe.trim());
+  var soxe = req.params.soxe.trim();
   if (!soxe) {
     httpcat(res, 400);
   } else {
     xemodel.getOne(soxe, (data) => {
-        if (data.length == 0) {
-            httpcat(res, 204);
-          } else {
-            res.render("xe-edit", { data: data[0] });
-          }
+      if (data.length == 0) {
+        httpcat(res, 204);
+      } else {
+        res.render("xe-edit", { data: data[0], req: req });
+      }
     })
   }
 }
+
 function update(req, res) {
   var soxe = req.params.soxe // Số xe cũ
   var data = req.body;
   console.log(data);
   xemodel.update(soxe, data,
-    function(err){
-      if(err){
+    function (err) {
+      if (err) {
         console.error(err)
         res.send(err)
-      }else{
+      } else {
         res.redirect(req.baseUrl)
       }
     })
-  
-
 }
+
 module.exports = {
   list,
   insert,
