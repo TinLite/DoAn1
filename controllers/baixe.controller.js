@@ -7,9 +7,15 @@ const baixeModel = require('../models/baixe.model')
  * Danh sách bãi
  */
 function list(req, res) {
-    baixeModel.getAll((list) => {
-        res.render('bai-list', { danhsachbai: list, success: (req.query.dataSuccess || req.success || false), req: req });
-    })
+    if (Object.keys(req.query).length == 0) {
+        baixeModel.getAll((list) => {
+            res.render('bai-list', { danhsachbai: list, success: (req.query.dataSuccess || req.success || false), req: req });
+        })
+    } else {
+        baixeModel.search(req.query.term, req.query.column, (err, results) => {
+            res.render('bai-list', { danhsachbai: results, success: (req.query.dataSuccess || req.success || false), req: req });
+        })
+    }
 }
 
 /**

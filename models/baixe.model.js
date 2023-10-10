@@ -51,9 +51,43 @@ function remove(mabai, callback) {
     )
 }
 
+function search(term, column, callback) {
+    console.log(`${term} ${column}`)
+    switch (column.trim().toLowerCase()) {
+        case "mabai":
+            pool.execute("SELECT * FROM `bai` WHERE `Mabai` = ?",
+                [term],
+                (err, results) => {
+                    console.log(results)
+                    callback(err, results)
+                }
+            )
+            break;
+        case "tenbai":
+            pool.execute("SELECT * FROM `bai` WHERE `Tenbai` LIKE ?",
+                [`%${term}%`],
+                (err, results) => {
+                    console.log(results)
+                    callback(err, results)
+                }
+            )
+            break;
+        case "vitri":
+            pool.execute("SELECT * FROM `bai` WHERE `Vitri` LIKE ?",
+                [`%${term}%`],
+                (err, results) => {
+                    console.log(results)
+                    callback(err, results)
+                }
+            )
+            break;
+    }
+}
+
 module.exports = {
     getAll,
     getOne,
+    search,
     insert,
     update,
     remove
