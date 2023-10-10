@@ -9,4 +9,8 @@ router.route('/detail/:maphieu?')
     .post(phieuxeController.update)
 router.post('/detail/:maphieu/delete',phieuxeController.remove)
 
+router.route('/generate/')
+    .get(phieuxeController.showGenerator)
+    .post(phieuxeController.generate)
+
 module.exports = router

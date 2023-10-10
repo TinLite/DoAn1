@@ -23,6 +23,20 @@ function getOne(maphieu, callback) {
         }
     );
 }
+
+function generate(mabai, soluong, callback) {
+    var query = 'INSERT INTO `Phieuxe` (`Mabai`) VALUES '
+    for (i = 0; i < soluong; i++) {
+        query += `(${mabai})`
+        if (soluong - i != 1) {
+            query += ","
+        }
+    }
+    pool.query(query, (err, result) => {
+        console.log(result.info)
+        callback(err)
+    })
+}
 function update(maphieu, mabai, callback) {
     pool.execute('UPDATE `Phieuxe` SET `Mabai` = ? WHERE `Phieu` = ?',
         [mabai,maphieu],
@@ -45,6 +59,7 @@ function remove(maphieu, callback) {
 module.exports = {
     getAll,
     getOne,
+    generate,
     update,
     remove
 }
