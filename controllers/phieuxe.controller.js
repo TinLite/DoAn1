@@ -8,11 +8,17 @@ const PhieuXe = require('../models/phieuxe.model')
  * Danh sách phiếu
  */
 function list(req, res) {
+        if(Object.keys(req.query).length == 0){
         PhieuXe.getAll(
             function (results) {
              res.render('phieu-list', { danhsachphieu: results, req: req });
+            })
+        }else{
+            PhieuXe.search(req.query.term,req.query.column, 
+                function(err,results){ 
+                 res.render('phieu-list', { danhsachphieu: results, req: req });
+                })
         }
-        )
 }
 
 /**
@@ -104,11 +110,27 @@ function remove(req, res) {
         }
     )
 }
+function search(req, res) {
+    var maphieu = parseInt(req.body.maphieu.trim())
+    var mabai = parseInt(req.body.mabai.trim())
+    PhieuXe.search(maphieu,mabai,
+    function(er,results){
+        console.log(results.info)
+        if(err){
+            console.error(err)
+        } else{
+            res.redirect(req.baseUrl + "?dataSuccess=true")
+        }
+
+    }
+    )
+}
 module.exports = {
     list,
     showGenerator,
     generate,
     detail,
     update,
-    remove
+    remove,
+    search
 }

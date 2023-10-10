@@ -7,13 +7,17 @@ const xemodel = require("../models/xe.model");
  * Danh sách xe
  */
 function list(req, res) {
-    xemodel.getAll((list) => {
-        res.render("xe-list", {
-            danhsachxe: list,
-            success: req.query.dataSuccess || req.success || false,
-            req: req,
+    console.log(req.query)
+    if(Object.keys(req.query).length == 0){
+        xemodel.getAll((list) => {
+            res.render("xe-list", {danhsachxe: list,success: req.query.dataSuccess || req.success || false,req: req,});
         });
-    });
+    }else{
+        xemodel.search(req.query.term, req.query.column,
+            function(err,results){
+                res.render("xe-list", {danhsachxe: results,success: req.query.dataSuccess || req.success || false,req: req,});
+        })
+    }
 }
 /**
  * POST /
@@ -74,10 +78,27 @@ function update(req, res) {
             }
         })
 }
-
+function remove(req, res) {
+    var soxe = (req.params.soxe.trim())
+    xemodel.remove(soxe,
+        function (err, results) {
+            // TODO fix err handling implementation here
+            console.log(results.info)
+            if (err) {
+                console.error(err)
+                httpcat(res, 500)
+            } else if (results.affectedRows == 0) {
+                httpcat(res, 404)
+            } else {
+                res.redirect(req.baseUrl)
+            }
+        }
+    )
+}
 module.exports = {
     list,
     insert,
     detail,
-    update
+    update,
+    remove
 };

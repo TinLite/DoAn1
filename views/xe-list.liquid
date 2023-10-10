@@ -45,16 +45,17 @@
                     method="get"
                     class="flex">
                     <input
+                        name="term"
                         type="search"
                         id="search-input"
                         class="flex-auto"
                         placeholder="Tìm kiếm">
                     <select
-                        name=""
-                        id=""
+                        name="column"
+                        id="column"
                         class="">
-                        <option value="">Số xe</option>
-                        <option value="">Mẫu xe</option>
+                        <option value="soxe">Số xe</option>
+                        <option value="mauxe">Mẫu xe</option>
                     </select>
                     <button type="submit" class="bg-black text-white py-2 px-4 ">Tìm kiếm</button>
                 </form>
@@ -76,7 +77,7 @@
                         <td class="inline-flex rounded-md shadow-sm divide-x-2">
                             <a href="{{ req.baseUrl }}/detail/{{ xe.Soxe }}" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-l-lg">Xem chi tiết</a>
                             <a href="{{ req.baseUrl }}/detail/{{ xe.Soxe }}" class="bg-white px-4 py-2 hover:bg-gray-200">Sửa</a>
-                            <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-r-lg">Xoá</a>
+                            <button onclick="promptDelete('{{ req.baseUrl }}/detail/{{ xe.Soxe}}/delete', '{{ xe.Soxe }} - {{ xe.Mauxe }}')" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-r-lg">Xoá</button>
                         </td>
                     </tr>
                 {% else %}

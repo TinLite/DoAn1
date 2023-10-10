@@ -56,10 +56,36 @@ function remove(maphieu, callback) {
         }
     )
 }
+function search(term,column,callback){
+    console.log(`${term} ${column}`) // OUT PUt variable term and column in terminal
+    switch(column.trim().toLowerCase()){
+        case "phieu":
+            pool.execute("SELECT * FROM `phieuxe` WHERE `Phieu` = ?",
+            [term],
+            function(err, results){
+                console.log(results)
+                callback(err,results)
+            }
+        )
+        break;
+        case "mabai":
+            pool.execute("SELECT * FROM `phieuxe` WHERE `Mabai` = ?",
+            [term],
+            function(err, results){
+                console.log(results)
+                callback(err,results)
+            }
+            )
+        break;
+    }
+
+}
+
 module.exports = {
     getAll,
     getOne,
     generate,
     update,
-    remove
+    remove,
+    search
 }
