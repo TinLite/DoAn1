@@ -7,7 +7,7 @@ const baixeModel = require('../models/baixe.model')
  * Danh sách bãi
  */
 function list(req, res) {
-    if (Object.keys(req.query).length == 0) {
+    if (Object.keys(req.query).includes("term")) {
         baixeModel.getAll((list) => {
             res.render('bai-list', { danhsachbai: list, success: (req.query.dataSuccess || req.success || false), req: req });
         })

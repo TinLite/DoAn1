@@ -7,8 +7,7 @@ const xemodel = require("../models/xe.model");
  * Danh sách xe
  */
 function list(req, res) {
-    console.log(req.query)
-    if(Object.keys(req.query).length == 0){
+    if(Object.keys(req.query).includes("term")){
         xemodel.getAll((list) => {
             res.render("xe-list", {danhsachxe: list,success: req.query.dataSuccess || req.success || false,req: req,});
         });
@@ -67,7 +66,6 @@ function detail(req, res) {
 function update(req, res) {
     var soxe = req.params.soxe // Số xe cũ
     var data = req.body;
-    console.log(data);
     xemodel.update(soxe, data,
         function (err) {
             if (err) {
