@@ -1,0 +1,42 @@
+{% layout "_include/layout.liquid" %}
+{% block content %}
+    {% if err %}
+        <div class="text-center py-4 bg-rose-600 text-white text-2xl">{{ err }}</div>
+    {% endif %}
+    {% if success %}
+        <div class="text-center py-4 bg-white text-2xl">Cập nhật dữ liệu thành công.</div>
+    {% endif %}
+    <div class="container mx-auto p-4 max-w-2xl">
+        <button onclick="history.back()" class="pb-2">&LeftAngleBracket; Trở về</button>
+        <div class="flex justify-between items-center py-2 border-b-2 border-gray-900 border-solid">
+        <div class="text-xl">Thêm phiếu số lượng lớn</div>
+        <a href="/baixe">Cần thêm bãi mới? Ấn vào đây</a>
+        </div>
+        <form
+            action=""
+            method="post"
+            class="grid grid-cols-1"
+            id="car-detail">
+            <label for="mabai">Bãi trực thuộc</label>
+            <select
+                name="mabai"
+                id="mabai"
+                class="">
+                {% for bai in danhsachbai %}
+                <option value="{{ bai.Mabai }}">{{ bai.Mabai }}. {{ bai.Tenbai }} - {{ bai.Vitri }}</option>
+                {% endfor %}
+            </select>
+            <label for="soluong">Số lượng phiếu cần tạo</label>
+            <input
+                type="number"
+                name="soluong"
+                id="soluong"
+                min="1"
+                value="1">
+            <div class="submit-container">
+                {% comment %} disabled:bg-gray-300 disabled:border disabled:border-white {% endcomment %}
+                <button type="submit" class="block m-auto bg-black text-white px-4 py-2 w-full">Thêm phiếu mới</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

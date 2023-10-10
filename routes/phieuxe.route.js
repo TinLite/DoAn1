@@ -8,4 +8,8 @@ router.route('/detail/:maphieu?')
     .get(phieuxeController.detail)
     .post(phieuxeController.update)
 
+router.route('/generate/')
+    .get(phieuxeController.showGenerator)
+    .post(phieuxeController.generate)
+
 module.exports = router

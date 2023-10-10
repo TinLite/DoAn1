@@ -17,10 +17,35 @@ function list(req, res) {
 }
 
 /**
- * POST /
+ * GET /generator
+ * Thêm phiếu mới
+ */
+function showGenerator(req, res) {
+    BaiXe.getAll((result) => {
+        res.render("phieu-add", {req: req, danhsachbai: result})
+    })
+}
+
+/**
+ * POST /generator
  * Thêm phiếu mới
  */
 function generate(req, res) {
+    var formData = req.body
+    BaiXe.getOne(formData.mabai, (err, results) => {
+        if (results.length == 0) {
+            httpcat(res, 400)
+        } else {
+            PhieuXe.generate(formData.mabai, formData.soluong, (err) => {
+                if (err) {
+                    console.error(err)
+                } else {
+                    req.success = true
+                    showGenerator(req, res)
+                }
+            })
+        }
+    })
 }
 
 /**
@@ -68,6 +93,7 @@ function update(req, res) {
 
 module.exports = {
     list,
+    showGenerator,
     generate,
     detail,
     update

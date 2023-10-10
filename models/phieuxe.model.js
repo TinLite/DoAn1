@@ -24,7 +24,22 @@ function getOne(maphieu, callback) {
     );
 }
 
+function generate(mabai, soluong, callback) {
+    var query = 'INSERT INTO `Phieuxe` (`Mabai`) VALUES '
+    for (i = 0; i < soluong; i++) {
+        query += `(${mabai})`
+        if (soluong - i != 1) {
+            query += ","
+        }
+    }
+    pool.query(query, (err, result) => {
+        console.log(result.info)
+        callback(err)
+    })
+}
+
 module.exports = {
     getAll,
-    getOne
+    getOne,
+    generate
 }
