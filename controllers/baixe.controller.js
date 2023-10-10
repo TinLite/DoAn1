@@ -73,8 +73,7 @@ function update(req, res) {
                 console.error(err)
                 httpcat(res, 500)
             } else {
-                req.success = true
-                list(req, res)
+                res.redirect(req.baseUrl + "?dataSuccess=true")
             }
         }
     )
