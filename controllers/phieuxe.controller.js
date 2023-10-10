@@ -99,8 +99,7 @@ function remove(req, res) {
             } else if (results.affectedRows == 0) {
                 httpcat(res, 404)
             } else {
-                req.success = true
-                list(req, res)
+                res.redirect(req.baseUrl + "?dataSuccess=true")
             }
         }
     )
