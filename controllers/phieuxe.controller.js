@@ -8,12 +8,11 @@ const PhieuXe = require('../models/phieuxe.model')
  * Danh sách phiếu
  */
 function list(req, res) {
-    pool.query(
-        'SELECT * FROM `Phieuxe`',
-        function (err, results) {
-            res.render('phieu-list', { danhsachphieu: results, req: req });
+        PhieuXe.getAll(
+            function (results) {
+             res.render('phieu-list', { danhsachphieu: results, req: req });
         }
-    );
+        )
 }
 
 /**
@@ -52,12 +51,10 @@ function update(req, res) {
     var maphieu = req.params.maphieu
     var mabai = parseInt(req.body.mabai);
     // TODO verify input
-    pool.execute('UPDATE `Phieuxe` SET `Mabai` = ? WHERE `Phieu` = ?',
-        [mabai, maphieu],
-        function (err, results, fields) {
+    PhieuXe.update(maphieu,mabai,
+        function (err) {
             if (err) {
                 console.log(err)
-                detail(req, res)
             } else {
                 req.success = true
                 detail(req, res)
@@ -65,10 +62,28 @@ function update(req, res) {
         }
     )
 }
-
+function remove(req, res) {
+    var maphieu = parseInt(req.params.maphieu.trim())
+    PhieuXe.remove(maphieu,
+        function (err, results) {
+            // TODO fix err handling implementation here
+            console.log(results.info)
+            if (err) {
+                console.error(err)
+                httpcat(res, 500)
+            } else if (results.affectedRows == 0) {
+                httpcat(res, 404)
+            } else {
+                req.success = true
+                list(req, res)
+            }
+        }
+    )
+}
 module.exports = {
     list,
     generate,
     detail,
-    update
+    update,
+    remove
 }

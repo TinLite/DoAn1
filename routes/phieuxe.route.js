@@ -7,5 +7,6 @@ router.get('/', phieuxeController.list)
 router.route('/detail/:maphieu?')
     .get(phieuxeController.detail)
     .post(phieuxeController.update)
+router.post('/detail/:maphieu/delete',phieuxeController.remove)
 
 module.exports = router
