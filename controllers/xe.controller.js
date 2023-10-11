@@ -67,7 +67,6 @@ function detail(req, res) {
                     }
                 }
                 )
-                // res.render("xe-edit", { data: data[0], req: req });
         }
         })
     }
