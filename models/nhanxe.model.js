@@ -1,6 +1,14 @@
 const {pool} = require('../services/mysql')
 
-function list(){}
+function getAll(callback){
+    pool.query(
+        'SELECT * FROM gui WHERE Trangthai = true LIMIT 5',
+        function(err,results){
+            callback(results)
+        }
+    );
+}
+
 module.exports = {
-    
+    getAll
 }

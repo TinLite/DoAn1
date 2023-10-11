@@ -57,8 +57,18 @@ function detail(req, res) {
             if (data.length == 0) {
                 httpcat(res, 204);
             } else {
-                res.render("xe-edit", { data: data[0], req: req });
-            }
+                pool.execute('SELECT g.*, b.Mabai, b.Tenbai FROM  phieuxe p , gui g, bai b WHERE  p.Phieu = g.Phieu AND b.Mabai = p.Mabai AND Soxe = ?',
+                [soxe],
+                function(err,results){
+                    if(err){
+                        console.log(err)
+                    } else{
+                        res.render("xe-edit", { data: data[0],lichsugui: results, req: req });
+                    }
+                }
+                )
+                // res.render("xe-edit", { data: data[0], req: req });
+        }
         })
     }
 }

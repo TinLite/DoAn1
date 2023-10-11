@@ -1,20 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const { pool } = require('../services/mysql')
+const nhanxeController = require('../controllers/nhanxe.controller')
 
-router.get('/', (req, res) => {
-    pool.query(
-        'SELECT * FROM `gui` ORDER BY `Thoigianvao` DESC LIMIT 5',
-        function (err, results) {
-            if (err) {
-                console.log(err)
-            } else {
-                res.render('nhanxe', { danhsachnhanxe: results, req: req })
-            }
-        }
-    )
-})
-
+router.get('/', nhanxeController.list)
 router.post('/', (req, res) => {
     var dataSent = req.body
     if (dataSent.maphieu.trim().length == 0) { // Nếu người dung k nhập mã phiếu sẽ báo lỗi
