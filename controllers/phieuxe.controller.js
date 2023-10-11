@@ -8,7 +8,7 @@ const PhieuXe = require('../models/phieuxe.model')
  * Danh sách phiếu
  */
 function list(req, res) {
-        if(Object.keys(req.query).includes("term")){
+        if(!Object.keys(req.query).includes("term")){
         PhieuXe.getAll(
             function (results) {
              res.render('phieu-list', { danhsachphieu: results, req: req });

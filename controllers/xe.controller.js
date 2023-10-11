@@ -7,7 +7,7 @@ const xemodel = require("../models/xe.model");
  * Danh sách xe
  */
 function list(req, res) {
-    if(Object.keys(req.query).includes("term")){
+    if(!Object.keys(req.query).includes("term")){
         xemodel.getAll((list) => {
             res.render("xe-list", {danhsachxe: list,success: req.query.dataSuccess || req.success || false,req: req,});
         });
