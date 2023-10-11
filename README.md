@@ -10,7 +10,7 @@ Repo này được mở public chỉ vì muốn cho bạn bè tham khảo.
 ### Backend
 
 - Nodejs  
-- expressjs  
+- [expressjs](https://expressjs.com/)  
 - [LiquidJS](https://liquidjs.com/tutorials/use-in-expressjs.html)  
 - MariaDB bundled with xampp
 
@@ -18,4 +18,11 @@ Repo này được mở public chỉ vì muốn cho bạn bè tham khảo.
 
 ### Frontend
 
-- TailwindCSS
+- [TailwindCSS](https://tailwindcss.com/docs/installation)
+
+## Setup môi trường
+
+1. Clone repo này về
+2. Nạp file dump [parking.sql](parking.sql) vào database.
+3. Gõ lệnh `npm start` (hoặc `nodemon` nếu có) để chạy server.
+4. (Tuỳ chọn) Mở một terminal mới, gõ lệnh `npm run-script tailwind` để mở tailwind.

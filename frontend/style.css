@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @keyframes bg-dot-move-up {
+    from {background-position-y: 0px;}
+    to {background-position-y: 5em;}
+}
+
+body {
+    background-size: 5em 5em;
+    background-image: radial-gradient(circle, black 1px, rgba(0, 0, 0, 0) 1px);
+    animation: bg-dot-move-up;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+} */
+
+#car-detail > * {
+    margin: 0.25em;
+}
+
+th {
+    padding-top: 1rem ;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
