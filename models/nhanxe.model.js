@@ -9,6 +9,7 @@ function getAll(callback){
     );
 }
 
+
 module.exports = {
-    getAll
+    getAll,
 }

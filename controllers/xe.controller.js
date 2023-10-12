@@ -7,15 +7,15 @@ const xemodel = require("../models/xe.model");
  * Danh sách xe
  */
 function list(req, res) {
-    if(!Object.keys(req.query).includes("term")){
+    if (!Object.keys(req.query).includes("term")) {
         xemodel.getAll((list) => {
-            res.render("xe-list", {danhsachxe: list,success: req.query.dataSuccess || req.success || false,req: req,});
+            res.render("xe-list", { danhsachxe: list, success: req.query.dataSuccess || req.success || false, req: req, });
         });
-    }else{
+    } else {
         xemodel.search(req.query.term, req.query.column,
-            function(err,results){
-                res.render("xe-list", {danhsachxe: results,success: req.query.dataSuccess || req.success || false,req: req,});
-        })
+            function (err, results) {
+                res.render("xe-list", { danhsachxe: results, success: req.query.dataSuccess || req.success || false, req: req, });
+            })
     }
 }
 /**
@@ -37,7 +37,7 @@ function insert(req, res) {
                 } else {
                     // Ngược lại, redirect về trang chính
                     req.success = true;
-                    list(req, res);
+                    list(req, res); 
                 }
             }
         );
@@ -49,27 +49,21 @@ function insert(req, res) {
  * Xem chi tiết xe
  */
 function detail(req, res) {
-    var soxe = req.params.soxe.trim();
-    if (!soxe) {
-        httpcat(res, 400);
-    } else {
-        xemodel.getOne(soxe, (data) => {
-            if (data.length == 0) {
-                httpcat(res, 204);
-            } else {
-                pool.execute('SELECT g.*, b.Mabai, b.Tenbai FROM  phieuxe p , gui g, bai b WHERE  p.Phieu = g.Phieu AND b.Mabai = p.Mabai AND Soxe = ?',
-                [soxe],
-                function(err,results){
-                    if(err){
-                        console.log(err)
-                    } else{
-                        res.render("xe-edit", { data: data[0],lichsugui: results, req: req });
+    var soxe = req.params.soxe.trim() // .params thay số xe = số xe trong bảng ls
+    xemodel.getOne(soxe,
+        function (result1) {
+            pool.execute('SELECT g.*, b.Mabai FROM  phieuxe p , gui g, bai b WHERE  p.Phieu = g.Phieu AND b.Mabai = p.Mabai ORDER BY g.ID DESC',
+                function (err, result2) {
+                    if (err) {
+                        console.error(err)
+                    } else {
+                        res.render("xe-edit", { data: result1[0], lichsunhanxe: result2, req: req });
                     }
                 }
-                )
+            )
         }
-        })
-    }
+
+    )
 }
 
 function update(req, res) {
