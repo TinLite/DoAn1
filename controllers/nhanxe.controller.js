@@ -7,29 +7,6 @@ function list(req, res) {
             res.render('nhanxe', { danhsachnhanxe: list, success: (req.query.dataSuccess || req.success || false), req: req });
         })
 }
-function detail(req, res) {
-    var soxe = req.params.soxe.trim();
-    if (!soxe) {
-        httpcat(res, 400);
-    } else {
-        xemodel.getOne(soxe, (data) => {
-            if (data.length == 0) {
-                httpcat(res, 204);
-            } else {
-                pool.execute('SELECT g.*, b.Mabai, b.Tenbai FROM  phieuxe p , gui g, bai b WHERE  p.Phieu = g.Phieu AND b.Mabai = p.Mabai AND Soxe = ?',
-                [soxe],
-                function(err,results){
-                    if(err){
-                        console.log(err)
-                    } else{
-                        res.render("nhanxe", { data: data[0],danhsachnhanxe: results, req: req });
-                    }
-                }
-                )
-        }
-        })
-    }
-}
 function insert(req,res) {
     var dataSent = req.body
     if (dataSent.maphieu.trim().length == 0) { // Nếu người dung k nhập mã phiếu sẽ báo lỗi
@@ -61,5 +38,4 @@ function insert(req,res) {
 module.exports = {  
     list,
     insert,
-    detail
 }
