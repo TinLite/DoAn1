@@ -49,7 +49,7 @@ function insert(req, res) {
  * Xem chi tiết xe
  */
 function detail(req, res) {
-    var soxe = req.params.soxe.trim() // .params thay số xe = số xe trong bảng ls
+    var soxe = req.params.soxe.trim() // .params thay số xe = số xe trong bảng ls .trim() xử lý những cách khoảng trống chuỗi thừa 
     xemodel.getOne(soxe,
         function (result1) {
             pool.execute('SELECT g.*, b.Mabai FROM  phieuxe p , gui g, bai b WHERE  p.Phieu = g.Phieu AND b.Mabai = p.Mabai ORDER BY g.ID DESC',

@@ -60,5 +60,6 @@ function insert(req,res) {
 }
 module.exports = {  
     list,
-    insert
+    insert,
+    detail
 }
