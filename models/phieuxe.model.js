@@ -10,6 +10,19 @@ function getAll(callback) {
     );
 }
 
+function getAllWithMaBai(soxe, callback) {
+    pool.execute('SELECT g.*, b.Mabai FROM phieuxe p, gui g, bai b WHERE p.Phieu = g.Phieu AND b.Mabai = p.Mabai AND g.Soxe = ? ORDER BY g.ID DESC',
+        [soxe],
+        function (err, result) {
+            if (err) {
+                console.error(err)
+            } else {
+                callback(err, result)
+            }
+        }
+    )
+}
+
 function getOne(maphieu, callback) {
     pool.execute(
         'SELECT * FROM `Phieuxe` WHERE `Phieu` = ? AND `Trangthai` = true',
@@ -83,6 +96,7 @@ function search(term,column,callback){
 
 module.exports = {
     getAll,
+    getAllWithMaBai,
     getOne,
     generate,
     update,

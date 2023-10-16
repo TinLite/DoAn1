@@ -1,6 +1,7 @@
 const { pool } = require("../services/mysql");
 const httpcat = require("../services/httpcat");
 const xemodel = require("../models/xe.model");
+const phieuxemodel = require("../models/phieuxe.model");
 
 /**
  * GET /
@@ -18,6 +19,7 @@ function list(req, res) {
             })
     }
 }
+
 /**
  * POST /
  * Thêm xe mới
@@ -37,7 +39,7 @@ function insert(req, res) {
                 } else {
                     // Ngược lại, redirect về trang chính
                     req.success = true;
-                    list(req, res); 
+                    list(req, res);
                 }
             }
         );
@@ -45,25 +47,27 @@ function insert(req, res) {
 }
 
 /**
- * GET detail/:mabai
+ * GET detail/:soxe
  * Xem chi tiết xe
  */
 function detail(req, res) {
-    var soxe = req.params.soxe.trim() // .params thay số xe = số xe trong bảng ls .trim() xử lý những cách khoảng trống chuỗi thừa 
+    var soxe = req.params.soxe
+    if (!soxe) {
+        return httpcat(res, 400);
+    }
+    var soxe = soxe.trim(); // .params thay số xe = số xe trong bảng ls .trim() xử lý những cách khoảng trống chuỗi thừa 
+    if (soxe.length == 0) {
+        return httpcat(res, 400);
+    }
     xemodel.getOne(soxe,
         function (result1) {
-            pool.execute('SELECT g.*, b.Mabai FROM phieuxe p, gui g, bai b WHERE p.Phieu = g.Phieu AND b.Mabai = p.Mabai AND g.Soxe = ? ORDER BY g.ID DESC',
-                [soxe],
-                function (err, result2) {
-                    if (err) {
-                        console.error(err)
-                    } else {
-                        res.render("xe-edit", { data: result1[0], lichsunhanxe: result2, req: req });
-                    }
-                }
-            )
+            if (result1.length == 0) {
+                return httpcat(res, 404);
+            }
+            phieuxemodel.getAllWithMaBai(soxe, (err, lichsugui) => {
+                res.render("xe-edit", { data: result1[0], lichsunhanxe: lichsugui, req: req });
+            })
         }
-
     )
 }
 
