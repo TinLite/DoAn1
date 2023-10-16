@@ -11,21 +11,23 @@
                 method="post"
                 autocomplete="off"
                 class="grid grid-cols-1"
-                id="thembai">
+                id="nhanxe">
                 <label for="maphieuvao" class="my-2">Mã phiếu</label>
                 <input
                     type="text"
                     name="maphieu"
                     id="maphieuvao"
                     value="{{ req.nhanBody.maphieu}}"
-                    placeholder="1234">
+                    placeholder="1234"
+                    required>
                 <label for="soxevao" class="my-2">Số xe</label>
                 <input
                     type="text"
                     name="soxe"
                     id="soxevao"
                     value="{{ req.nhanBody.soxe }}"
-                    placeholder="65-AA12222">
+                    placeholder="65-AA12222"
+                    required>
                 <button type="submit" class="block bg-black text-white px-4 py-2 mt-2">Nhận xe vào</button>
             </form>
             <div class="text-xl py-2 border-b-2 border-gray-900 border-solid">Lịch sử hệ thống</div>
@@ -61,14 +63,15 @@
                 method="post"
                 autocomplete="off"
                 class="grid grid-cols-1"
-                id="thembai">
+                id="xuatxe">
                 <label for="maphieura" class="my-2">Mã phiếu</label>
                 <input
                     type="text"
                     name="maphieu"
                     id="maphieura"
                     value="{{ req.xuatBody.maphieu}}"
-                    placeholder="1234">
+                    placeholder="1234"
+                    required>
                 <button type="submit" class="block bg-black text-white px-4 py-2 mt-2">Cho xe ra</button>
             </form>
             <div class="text-xl py-2 border-b-2 border-gray-900 border-solid">Lịch sử hệ thống</div>
