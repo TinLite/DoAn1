@@ -53,24 +53,17 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-300">
+                {%for ls in lsphieu %}
                 <tr class="hover:bg-slate-100">
-                    <td>123456</td>
-                    <td>Honda</td>
-                    <td>13:05</td>
-                    <td>14:01</td>
+                    <td>{{ls.Soxe}}</td>
+                    <td>{{ls.Mauxe}}</td>
+                    <td>{{ls.Thoigianvao | date: "%Y-%m-%d %H:%M" }}</td>
+                    <td>{{ls.Thoigianra | date: "%Y-%m-%d %H:%M" }}</td>
                     <td class="inline-flex rounded-md shadow-sm divide-x-2">
-                        <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-lg">Xem thông tin xe</a>
+                        <a href="/xe/detail/{{ls.Soxe}}" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-lg">Xem thông tin xe</a>
                     </td>
                 </tr>
-                <tr class="hover:bg-slate-100">
-                    <td>251575</td>
-                    <td>Suzuki</td>
-                    <td>14:35</td>
-                    <td>16:02</td>
-                    <td class="inline-flex rounded-md shadow-sm divide-x-2">
-                        <a href="#" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-lg">Xem thông tin xe</a>
-                    </td>
-                </tr>
+                {%endfor%}
             </tbody>
         </table>
     </div>

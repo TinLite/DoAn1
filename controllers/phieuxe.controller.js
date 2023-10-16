@@ -2,6 +2,7 @@ const { pool } = require('../services/mysql')
 const httpcat = require('../services/httpcat')
 const BaiXe = require('../models/baixe.model')
 const PhieuXe = require('../models/phieuxe.model')
+const Nhanxe =require('../models/nhanxe.model')
 
 /**
  * GET /
@@ -67,7 +68,10 @@ function detail(req, res) {
                 httpcat(res, 400)
             } else {
                 BaiXe.getAll((list) => {
-                    res.render('phieu-detail', { req: req, maphieu: maphieu, phieu: phieu, danhsachbai: list })
+                    Nhanxe.getLichSuTheoPhieu(maphieu,
+                    function(results){
+                        res.render('phieu-detail', { req: req, maphieu: maphieu, phieu: phieu, danhsachbai: list ,lsphieu: results })
+                    })
                 })
             }
         })

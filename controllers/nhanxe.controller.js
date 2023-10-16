@@ -51,6 +51,9 @@ function choxera(req, res) {
     function(err,results){
         if(err){
             res.err=err.message
+        }else if (results.affectedRows == 0){
+            res.err = "Không có xe nào đang gửi với mã phiếu này"
+            list(req,res)
         }else{
             res.redirect(req.baseUrl)
         }
