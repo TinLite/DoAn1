@@ -1,20 +1,23 @@
-const {pool} = require('../services/mysql')
+const { pool } = require('../services/mysql')
 const httpcat = require('../services/httpcat')
 const nhanxemodel = require('../models/nhanxe.model')
 
 function list(req, res) {
-        nhanxemodel.getAll((list) => {
-            res.render('nhanxe', { danhsachnhanxe: list, success: (req.query.dataSuccess || req.success || false), req: req });
-        })
+    nhanxemodel.getAll((list) => {
+        res.render('nhanxe', { err: res.err, danhsachnhanxe: list, success: (req.query.dataSuccess || req.success || false), req: req });
+    })
 }
-function insert(req,res) {
+function choxevao(req, res) {
     var dataSent = req.body
+    req.nhanBody = req.body;
     if (dataSent.maphieu.trim().length == 0) { // Nếu người dung k nhập mã phiếu sẽ báo lỗi
-        res.render("nhanxe", { err: "Không được phép để trống mã phiếu", body: dataSent, req: req })
+        res.err = "Không được phép để trống mã phiếu";
+        list(req, res);
     } else if (dataSent.soxe.trim().length == 0) { // Nếu người dùng k nhập số xe sẽ báo lỗi
-        res.render("nhanxe", { err: "Không được phép để trống số xe", body: dataSent, req: req })
+        res.err = "Không được phép để trống số xe";
+        list(req, res);
     } else {
-        pool.execute('SELECT * FROM `gui` WHERE (`Phieu` = ? OR `Soxe` = ?) AND  `Thoigianra` IS NULL ORDER BY Thoigianvao DESC LIMIT 5',
+        pool.execute('SELECT * FROM `gui` WHERE (`Phieu` = ? OR `Soxe` = ?) AND `Thoigianra` IS NULL',
             [dataSent.maphieu, dataSent.soxe],
             function (err, results, fields) {
                 console.log(results)
@@ -23,19 +26,28 @@ function insert(req,res) {
                         [dataSent.maphieu, dataSent.soxe],
                         function (err, results, fields) {
                             if (err) {
-                                res.render("nhanxe", { err: err.message, body: dataSent, req: req })
+                                res.err = err.message
+                                list(req, res);
                             } else {
                                 res.redirect(req.baseUrl)
                             }
                         }
                     )
                 } else {
-                    res.render("nhanxe", { err: "Số xe hoặc số thẻ đã tồn tại.", body: dataSent, req: req })
+                    res.err = "Số xe hoặc số thẻ đang sử dụng trong bãi.";
+                    list(req, res)
                 }
-            })
+            }
+        )
     }
 }
-module.exports = {  
+
+function choxera(req, res) {
+    res.send("OK");
+}
+
+module.exports = {
     list,
-    insert,
+    choxevao,
+    choxera,
 }
