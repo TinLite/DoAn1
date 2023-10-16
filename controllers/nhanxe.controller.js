@@ -3,8 +3,10 @@ const httpcat = require('../services/httpcat')
 const nhanxemodel = require('../models/nhanxe.model')
 
 function list(req, res) {
-    nhanxemodel.getAll((list) => {
-        res.render('nhanxe', { err: res.err, danhsachnhanxe: list, success: (req.query.dataSuccess || req.success || false), req: req });
+    nhanxemodel.getDSMoiVao((dsmoivao) => {
+        nhanxemodel.getDSMoiRa((dsmoira) => {
+            res.render('nhanxe', { err: res.err, danhsachnhanxe: dsmoivao,danhsachxuatxe: dsmoira, success: (req.query.dataSuccess || req.success || false), req: req });
+        })
     })
 }
 function choxevao(req, res) {
@@ -43,7 +45,16 @@ function choxevao(req, res) {
 }
 
 function choxera(req, res) {
-    res.send("OK");
+    var formData = req.body
+    pool.execute('UPDATE gui SET Thoigianra = CURRENT_TIMESTAMP() WHERE Phieu = ? AND Thoigianra IS NULL',
+    [formData.maphieu],
+    function(err,results){
+        if(err){
+            res.err=err.message
+        }else{
+            res.redirect(req.baseUrl)
+        }
+    })
 }
 
 module.exports = {
