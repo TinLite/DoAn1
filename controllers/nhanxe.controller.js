@@ -19,22 +19,19 @@ function choxevao(req, res) {
         res.err = "Không được phép để trống số xe";
         list(req, res);
     } else {
-        pool.execute('SELECT * FROM `gui` WHERE (`Phieu` = ? OR `Soxe` = ?) AND `Thoigianra` IS NULL',
-            [dataSent.maphieu, dataSent.soxe],
-            function (err, results, fields) {
+        nhanxemodel.test(dataSent,
+            function (results) {
                 console.log(results)
                 if (results.length == 0) {
-                    pool.execute("INSERT INTO `gui` (`Phieu`, `Soxe`) VALUES (?, ?)",
-                        [dataSent.maphieu, dataSent.soxe],
-                        function (err, results, fields) {
-                            if (err) {
-                                res.err = err.message
-                                list(req, res);
-                            } else {
-                                res.redirect(req.baseUrl)
+                    nhanxemodel.insert(dataSent,
+                        function (err) {
+                            if (err) { // Nếu database báo lỗi thì show lỗi ra
+                                res.render("nhanxe", { err: err.message, body: formData, req: req })
+                            } else { // Ngược lại, redirect về trang chính
+                                req.success = true
+                                list(req, res)
                             }
-                        }
-                    )
+                        })
                 } else {
                     res.err = "Số xe hoặc số thẻ đang sử dụng trong bãi.";
                     list(req, res)
@@ -46,8 +43,7 @@ function choxevao(req, res) {
 
 function choxera(req, res) {
     var formData = req.body
-    pool.execute('UPDATE gui SET Thoigianra = CURRENT_TIMESTAMP() WHERE Phieu = ? AND Thoigianra IS NULL',
-    [formData.maphieu],
+    nhanxemodel.updatexera(formData,
     function(err,results){
         if(err){
             res.err=err.message
@@ -55,7 +51,7 @@ function choxera(req, res) {
             res.err = "Không có xe nào đang gửi với mã phiếu này"
             list(req,res)
         }else{
-            res.redirect(req.baseUrl)
+            list(req,res)
         }
     })
 }
