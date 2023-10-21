@@ -40,7 +40,7 @@ function insert(newdata, callback) {
         }
     )
 }
-function test(newdata,callback){
+function getAllWithFormData(newdata,callback){
     pool.execute('SELECT * FROM `gui` WHERE (`Phieu` = ? OR `Soxe` = ?) AND `Thoigianra` IS NULL',
     [newdata.maphieu, newdata.soxe],
     function(err,results,fields){
@@ -48,7 +48,7 @@ function test(newdata,callback){
         callback(results)
     })
 }
-function updatexera (newdata,callback){
+function updateThoiGianRa (newdata,callback){
     pool.execute('UPDATE gui SET Thoigianra = CURRENT_TIMESTAMP() WHERE Phieu = ? AND Thoigianra IS NULL',
     [newdata.maphieu],
     function (err, results, fields) {
@@ -62,6 +62,6 @@ module.exports = {
     getDSMoiRa,
     getLichSuTheoPhieu,
     insert,
-    test,
-    updatexera 
+    getAllWithFormData,
+    updateThoiGianRa 
 }

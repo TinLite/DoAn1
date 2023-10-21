@@ -1,10 +1,10 @@
 const { pool } = require('../services/mysql')
 const httpcat = require('../services/httpcat')
-const nhanxemodel = require('../models/nhanxe.model')
+const nhanXeModel = require('../models/nhanxe.model')
 
 function list(req, res) {
-    nhanxemodel.getDSMoiVao((dsmoivao) => {
-        nhanxemodel.getDSMoiRa((dsmoira) => {
+    nhanXeModel.getDSMoiVao((dsmoivao) => {
+        nhanXeModel.getDSMoiRa((dsmoira) => {
             res.render('nhanxe', { err: res.err, danhsachnhanxe: dsmoivao,danhsachxuatxe: dsmoira, success: (req.query.dataSuccess || req.success || false), req: req });
         })
     })
@@ -19,11 +19,11 @@ function choxevao(req, res) {
         res.err = "Không được phép để trống số xe";
         list(req, res);
     } else {
-        nhanxemodel.test(dataSent,
+        nhanXeModel.getAllWithFormData(dataSent,
             function (results) {
                 console.log(results)
                 if (results.length == 0) {
-                    nhanxemodel.insert(dataSent,
+                    nhanXeModel.insert(dataSent,
                         function (err) {
                             if (err) { // Nếu database báo lỗi thì show lỗi ra
                                 res.render("nhanxe", { err: err.message, body: formData, req: req })
@@ -43,7 +43,7 @@ function choxevao(req, res) {
 
 function choxera(req, res) {
     var formData = req.body
-    nhanxemodel.updatexera(formData,
+    nhanXeModel.updateThoiGianRa(formData,
     function(err,results){
         if(err){
             res.err=err.message
