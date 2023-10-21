@@ -10,7 +10,7 @@
         <a href="{{ req.baseUrl }}" class="pb-2">&LeftAngleBracket; Trở về</a>
         <div class="flex justify-between pt-2 border-b-2 border-gray-900 border-solid items-center">
             <div class="text-xl">Thông tin phiếu</div>
-            <button class="px-4 py-2 bg-rose-600 text-white" onclick="console.log()">Xoá phiếu</button>
+            <button class="px-4 py-2 bg-rose-600 text-white" onclick="promptDelete('{{ req.baseUrl }}/detail/{{ phieu.Phieu }}/delete', '{{ phieu.Phieu }}. {{ phieu.Mabai }}')">Xoá phiếu</button>
         </div>
         <form
             action=""
@@ -63,7 +63,11 @@
                         <a href="/xe/detail/{{ls.Soxe}}" class="bg-white px-4 py-2 hover:bg-gray-200 rounded-lg">Xem thông tin xe</a>
                     </td>
                 </tr>
-                {%endfor%}
+                {% else %}
+                <tr class="bg-slate-100">
+                    <td colspan="10">{{ "Không tìm thấy bãi xe nào." }}</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
