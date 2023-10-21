@@ -17,16 +17,23 @@
                         id="search-input"
                         class="flex-auto"
                         placeholder="Tìm kiếm phiếu xe"
+                        value="{{ req.query.term }}"
+                        autofocus
                         required>
                     <select
                         name="column"
                         id="column"
                         class="">
-                        <option value="phieu">Mã phiếu</option>
-                        <option value="mabai">Mã bãi</option>
+                        <option value="phieu"{% if req.query.terms == "phieu" %} selected{% endif %}>Mã phiếu</option>
+                        <option value="mabai"{% if req.query.terms == "mabai" %} selected{% endif %}>Mã bãi</option>
                     </select>
                     <button type="submit" class="bg-black text-white py-2 px-4 ">Tìm kiếm</button>
                 </form>
+                {% if req.query.term %}
+                <div class="bg-slate-100 px-4 py-2">
+                    <a href="{{ req.baseUrl }}" class="text-sky-700 underline">Xoá bộ lọc tìm kiếm</a>
+                </div>
+                {% endif %}
             </div>
         </div>
         <table class="border-collapse border w-full text-center">
