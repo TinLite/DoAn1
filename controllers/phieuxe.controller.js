@@ -89,7 +89,8 @@ function update(req, res) {
     PhieuXe.update(maphieu,mabai,
         function (err) {
             if (err) {
-                console.log(err)
+                console.err(err)
+                httpcat(res, 500)
             } else {
                 req.success = true
                 detail(req, res)
