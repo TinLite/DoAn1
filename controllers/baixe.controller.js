@@ -46,7 +46,6 @@ function insert(req, res) {
  */
 function detail(req, res) {
     var mabai = parseInt(req.params.mabai.trim())
-    console.log(req.baseUrl)
     if (!mabai) {
         httpcat(res, 400)
     } else {
@@ -90,7 +89,6 @@ function remove(req, res) {
     baixeModel.remove(mabai,
         function (err, results) {
             // TODO fix err handling implementation here
-            console.log(results.info)
             if (err) {
                 console.error(err)
                 httpcat(res, 500)

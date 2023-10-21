@@ -21,7 +21,6 @@ function choxevao(req, res) {
     } else {
         nhanXeModel.getAllWithFormData(dataSent,
             function (results) {
-                console.log(results)
                 if (results.length == 0) {
                     nhanXeModel.insert(dataSent,
                         function (err) {

@@ -27,13 +27,11 @@ function update(soxe, newdata, callback){
   )
 }
 function search(term,column,callback){
-    console.log(`${term} ${column} `)
     switch(column.trim().toLowerCase()){
         case "soxe":
             pool.execute("SELECT * FROM `xe` WHERE `Soxe` LIKE ? AND Trangthai = true ",
             [`%${term}%`],
             function(err,results){
-                console.log(results)
                 callback(err,results)
             })
         break;
@@ -41,7 +39,6 @@ function search(term,column,callback){
             pool.execute("SELECT * FROM `xe` WHERE `Mauxe` LIKE ? AND Trangthai = true ",
             [`%${term}%`],
             function(err,results){
-                console.log(results)
                 callback(err,results)
             })
         break;
