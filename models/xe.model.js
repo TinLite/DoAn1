@@ -18,45 +18,56 @@ function getOne(soxe, callback) {
         }
     )
 }
-function update(soxe, newdata, callback){
+function update(soxe, newdata, callback) {
     pool.execute("UPDATE `xe` SET Mauxe = ? WHERE `Soxe` = ? AND `Trangthai` = true",
-  [newdata.mauxe, soxe],
-  function (err, results, fields) { // k có function (er,...) =>{}
-    callback(err)
-  }
-  )
+        [newdata.mauxe, soxe],
+        function (err, results, fields) { // k có function (er,...) =>{}
+            callback(err)
+        }
+    )
 }
-function search(term,column,callback){
-    switch(column.trim().toLowerCase()){
+function search(term, column, callback) {
+    switch (column.trim().toLowerCase()) {
         case "soxe":
             pool.execute("SELECT * FROM `xe` WHERE `Soxe` LIKE ? AND Trangthai = true ",
-            [`%${term}%`],
-            function(err,results){
-                callback(err,results)
-            })
-        break;
+                [`%${term}%`],
+                function (err, results) {
+                    callback(err, results)
+                })
+            break;
         case "mauxe":
             pool.execute("SELECT * FROM `xe` WHERE `Mauxe` LIKE ? AND Trangthai = true ",
-            [`%${term}%`],
-            function(err,results){
-                callback(err,results)
-            })
-        break;
+                [`%${term}%`],
+                function (err, results) {
+                    callback(err, results)
+                })
+            break;
     }
 }
-function remove(soxe,callback){
+function remove(soxe, callback) {
     pool.execute('UPDATE `xe` SET `Trangthai` = false WHERE `Soxe` = ? AND `Trangthai` = true',
-    [soxe],
-    function (err, results, fields) {
-        console.log(results.info)
-        callback(err, results)
-    }
-)
+        [soxe],
+        function (err, results, fields) {
+            console.log(results.info)
+            callback(err, results)
+        }
+    )
+}
+function insertOne(soxe, mauxe, callback) {
+    pool.execute(
+        "INSERT INTO `xe` (`Soxe`,`Mauxe`) VALUES (?, ?)",
+        [soxe, mauxe],
+        function (err, results, fields) {
+            console.log(results.info)
+            callback(err, results)
+        }
+    );
 }
 module.exports = {
     getAll,
     getOne,
     update,
     search,
-    remove
+    remove,
+    insertOne
 }

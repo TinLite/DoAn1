@@ -1,4 +1,3 @@
-const { pool } = require("../services/mysql");
 const httpcat = require("../services/httpcat");
 const xemodel = require("../models/xe.model");
 const phieuxemodel = require("../models/phieuxe.model");
@@ -10,12 +9,12 @@ const phieuxemodel = require("../models/phieuxe.model");
 function list(req, res) {
     if (!Object.keys(req.query).includes("term")) {
         xemodel.getAll((list) => {
-            res.render("xe-list", { danhsachxe: list, success: req.query.dataSuccess || req.success || false, req: req, });
+            res.render("xe-list", { danhsachxe: list, body: req.insertForm, err: req.error_message, success: req.query.dataSuccess || req.success || false, req: req, });
         });
     } else {
         xemodel.search(req.query.term, req.query.column,
             function (err, results) {
-                res.render("xe-list", { danhsachxe: results, success: req.query.dataSuccess || req.success || false, req: req, });
+                res.render("xe-list", { danhsachxe: results, body: req.insertForm, err: req.error_message, success: req.query.dataSuccess || req.success || false, req: req, });
             })
     }
 }
@@ -26,24 +25,22 @@ function list(req, res) {
  */
 function insert(req, res) {
     var formData = req.body;
-    if (formData.soxe.trim().length <= 3) {
-        res.render("xe-list", { err: "Số xe không được để trống", body: formData });
-    } else {
-        pool.execute(
-            "INSERT INTO `xe` (`Soxe`,`Mauxe`) VALUES (?, ?)",
-            [formData.soxe, formData.mauxe],
-            function (err, results, fields) {
-                if (err) {
-                    // Nếu database báo lỗi thì show lỗi ra
-                    res.render("xe-list", { err: err.message, body: formData });
-                } else {
-                    // Ngược lại, redirect về trang chính
-                    req.success = true;
-                    list(req, res);
-                }
+    xemodel.insertOne(
+        formData.soxe,
+        formData.mauxe,
+        function (err) {
+            if (err) {
+                // Nếu database báo lỗi thì show lỗi ra
+                req.error_message = err.message
+                req.insertForm = formData
+                list(req, res);
+            } else {
+                // Ngược lại, redirect về trang chính
+                req.success = true;
+                list(req, res);
             }
-        );
-    }
+        }
+    )
 }
 
 /**
