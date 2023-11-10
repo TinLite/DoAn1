@@ -1,6 +1,7 @@
 const httpcat = require("../services/httpcat");
 const xemodel = require("../models/xe.model");
 const phieuxemodel = require("../models/phieuxe.model");
+const uploadService = require("../services/uploads")
 
 /**
  * GET /
@@ -25,20 +26,31 @@ function list(req, res) {
  */
 function insert(req, res) {
     var formData = req.body;
-    xemodel.insertOne(
+    // console.log(formData)
+    uploadService.saveBase64Image(
+        formData.anh,
         formData.soxe,
-        formData.mauxe,
-        function (err) {
+        (err, filename) => {
             if (err) {
-                // Nếu database báo lỗi thì show lỗi ra
+                console.error(err);
                 req.error_message = err.message
-                req.insertForm = formData
-                list(req, res);
-            } else {
-                // Ngược lại, redirect về trang chính
-                req.success = true;
-                list(req, res);
             }
+            xemodel.insertOne(
+                formData.soxe,
+                formData.mauxe,
+                filename,
+                function (err) {
+                    if (err) {
+                        // Nếu database báo lỗi thì show lỗi ra
+                        req.error_message = err.message
+                        req.insertForm = formData
+                        list(req, res);
+                    } else {
+                        req.success = true;
+                        list(req, res);
+                    }
+                }
+            )
         }
     )
 }
@@ -71,15 +83,41 @@ function detail(req, res) {
 function update(req, res) {
     var soxe = req.params.soxe // Số xe cũ
     var data = req.body;
-    xemodel.update(soxe, data,
-        function (err) {
-            if (err) {
-                console.error(err)
-                res.send(err)
-            } else {
-                res.redirect(req.baseUrl)
+
+    var errorHandlerAndRedirect = function (err) {
+        if (err) {
+            console.error(err)
+            res.send(err)
+        } else {
+            res.redirect(req.baseUrl)
+        }
+    };
+
+    // Nếu người dùng cập nhật ảnh (Trường anh tồn tại trong form)
+    if (data.anh) {
+        uploadService.saveBase64Image(
+            data.anh,
+            soxe,
+            (err, filename) => {
+                if (err) {
+                    console.error(err);
+                    req.error_message = err.message
+                }
+                xemodel.update(
+                    soxe,
+                    data.mauxe,
+                    filename,
+                    errorHandlerAndRedirect
+                )
             }
-        })
+        )
+    }
+    else
+        xemodel.update(
+            soxe,
+            data.mauxe,
+            errorHandlerAndRedirect
+        )
 }
 function remove(req, res) {
     var soxe = (req.params.soxe.trim())

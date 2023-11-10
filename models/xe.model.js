@@ -18,11 +18,19 @@ function getOne(soxe, callback) {
         }
     )
 }
-function update(soxe, newdata, callback) {
+function update(soxe, mauxe, callback) {
     pool.execute("UPDATE `xe` SET Mauxe = ? WHERE `Soxe` = ? AND `Trangthai` = true",
-        [newdata.mauxe, soxe],
+        [mauxe, soxe],
         function (err, results, fields) { // k có function (er,...) =>{}
-            callback(err)
+            callback(err, results)
+        }
+    )
+}
+function update(soxe, mauxe, anh, callback) {
+    pool.execute("UPDATE `xe` SET Mauxe = ?, Hinhanh = ? WHERE `Soxe` = ? AND `Trangthai` = true",
+        [mauxe, anh, soxe],
+        function (err, results, fields) { // k có function (er,...) =>{}
+            callback(err, results)
         }
     )
 }
@@ -53,10 +61,22 @@ function remove(soxe, callback) {
         }
     )
 }
+
 function insertOne(soxe, mauxe, callback) {
     pool.execute(
         "INSERT INTO `xe` (`Soxe`,`Mauxe`) VALUES (?, ?)",
         [soxe, mauxe],
+        function (err, results, fields) {
+            console.log(results.info)
+            callback(err, results)
+        }
+    );
+}
+
+function insertOne(soxe, mauxe, hinhanh, callback) {
+    pool.execute(
+        "INSERT INTO `xe` (`Soxe`,`Mauxe`, `Hinhanh`) VALUES (?, ?, ?)",
+        [soxe, mauxe, hinhanh],
         function (err, results, fields) {
             console.log(results.info)
             callback(err, results)
