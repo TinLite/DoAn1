@@ -57,27 +57,37 @@ function generate(req, res) {
 }
 
 /**
+ * detail/
+ * Middleware xác thực mã phiếu cho toàn bộ đường dẫn thuộc detail
+ */
+function validate(req, res, next) {
+    var maphieu = parseInt(req.params.maphieu);
+    if (!maphieu || maphieu < 1) {
+        httpcat(res, 400);
+    } else {
+        req.params.maphieu = maphieu;
+        next();
+    }
+}
+
+/**
  * GET detail/:maphieu
  * Xem chi tiết phiếu
  */
 function detail(req, res) {
-    var maphieu = parseInt(req.params.maphieu.trim())
-    if (!maphieu) {
-        httpcat(res, 400)
-    } else {
-        PhieuXe.getOne(maphieu, (phieu) => {
-            if (!phieu) {
-                httpcat(res, 400)
-            } else {
-                BaiXe.getAll((list) => {
-                    Nhanxe.getLichSuTheoPhieu(maphieu,
-                        function (results) {
-                            res.render('phieu-detail', { req: req, maphieu: maphieu, phieu: phieu, danhsachbai: list, lsphieu: results })
-                        })
-                })
-            }
-        })
-    }
+    var maphieu = req.params.maphieu;
+    PhieuXe.getOne(maphieu, (phieu) => {
+        if (!phieu) {
+            httpcat(res, 400)
+        } else {
+            BaiXe.getAll((list) => {
+                Nhanxe.getLichSuTheoPhieu(maphieu,
+                    function (results) {
+                        res.render('phieu-detail', { req: req, maphieu: maphieu, phieu: phieu, danhsachbai: list, lsphieu: results })
+                    })
+            })
+        }
+    })
 }
 
 /**
@@ -101,7 +111,7 @@ function update(req, res) {
     )
 }
 function remove(req, res) {
-    var maphieu = parseInt(req.params.maphieu.trim())
+    var maphieu = req.params.maphieu
     PhieuXe.remove(maphieu,
         function (err, results) {
             // TODO fix err handling implementation here
@@ -133,6 +143,7 @@ function search(req, res) {
     )
 }
 module.exports = {
+    validate,
     list,
     showGenerator,
     generate,

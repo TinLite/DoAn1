@@ -47,7 +47,6 @@ function insert(req, res) {
  * Middleware xác thực mã bãi
  */
 function validate(req, res, next) {
-    console.log("VALIDATION!");
     var mabai = parseInt(req.params.mabai);
     if (!mabai || mabai < 1) {
         httpcat(res, 400)
