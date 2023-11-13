@@ -51,8 +51,11 @@ function validate(req, res, next) {
     var mabai = parseInt(req.params.mabai);
     if (!mabai || mabai < 1) {
         httpcat(res, 400)
-    } else
+    } else {
+        // Parse int sẵn luôn :v
+        req.params.mabai = mabai
         next();
+    }
 }
 
 /**
@@ -60,7 +63,7 @@ function validate(req, res, next) {
  * Xem chi tiết bãi
  */
 function detail(req, res) {
-    var mabai = parseInt(req.params.mabai.trim())
+    var mabai = mabai
     baixeModel.getOne(mabai,
         function (err, results) {
             if (results.length == 0) {
@@ -80,7 +83,7 @@ function detail(req, res) {
  * Cập nhật bãi
  */
 function update(req, res) {
-    var mabai = parseInt(req.params.mabai.trim())
+    var mabai = mabai
     var formData = req.body;
     baixeModel.update(mabai, formData,
         function (err) {
@@ -96,7 +99,7 @@ function update(req, res) {
 }
 
 function remove(req, res) {
-    var mabai = parseInt(req.params.mabai.trim())
+    var mabai = mabai
     baixeModel.remove(mabai,
         function (err, results) {
             // TODO fix err handling implementation here
