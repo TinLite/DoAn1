@@ -42,6 +42,10 @@ function insert(req, res) {
     }
 }
 
+/**
+ * /detail/
+ * Middleware xác thực mã bãi
+ */
 function validate(req, res, next) {
     console.log("VALIDATION!");
     var mabai = parseInt(req.params.mabai);
