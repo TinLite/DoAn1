@@ -2,24 +2,26 @@ const { pool } = require('../services/mysql')
 const httpcat = require('../services/httpcat')
 const BaiXe = require('../models/baixe.model')
 const PhieuXe = require('../models/phieuxe.model')
-const Nhanxe =require('../models/nhanxe.model')
+const Nhanxe = require('../models/nhanxe.model')
 
 /**
  * GET /
  * Danh sách phiếu
  */
 function list(req, res) {
-        if(!Object.keys(req.query).includes("term")){
-        PhieuXe.getAll(
-            function (results) {
-             res.render('phieu-list', { danhsachphieu: results, req: req });
+    if (!Object.keys(req.query).includes("term")) {
+        PhieuXe.getCount((err, size) => {
+            PhieuXe.getAll(
+                function (results) {
+                    res.render('phieu-list', { danhsachphieu: results, req: req, size: size });
+                }, (req.query.page ? parseInt(req.query.page) : 1))
+        })
+    } else {
+        PhieuXe.search(req.query.term, req.query.column,
+            function (err, results) {
+                res.render('phieu-list', { danhsachphieu: results, req: req });
             })
-        }else{
-            PhieuXe.search(req.query.term,req.query.column, 
-                function(err,results){ 
-                 res.render('phieu-list', { danhsachphieu: results, req: req });
-                })
-        }
+    }
 }
 
 /**
@@ -28,7 +30,7 @@ function list(req, res) {
  */
 function showGenerator(req, res) {
     BaiXe.getAll((result) => {
-        res.render("phieu-add", {req: req, danhsachbai: result})
+        res.render("phieu-add", { req: req, danhsachbai: result })
     })
 }
 
@@ -69,9 +71,9 @@ function detail(req, res) {
             } else {
                 BaiXe.getAll((list) => {
                     Nhanxe.getLichSuTheoPhieu(maphieu,
-                    function(results){
-                        res.render('phieu-detail', { req: req, maphieu: maphieu, phieu: phieu, danhsachbai: list ,lsphieu: results })
-                    })
+                        function (results) {
+                            res.render('phieu-detail', { req: req, maphieu: maphieu, phieu: phieu, danhsachbai: list, lsphieu: results })
+                        })
                 })
             }
         })
@@ -86,7 +88,7 @@ function update(req, res) {
     var maphieu = req.params.maphieu
     var mabai = parseInt(req.body.mabai);
     // TODO verify input
-    PhieuXe.update(maphieu,mabai,
+    PhieuXe.update(maphieu, mabai,
         function (err) {
             if (err) {
                 console.err(err)
@@ -118,16 +120,16 @@ function remove(req, res) {
 function search(req, res) {
     var maphieu = parseInt(req.body.maphieu.trim())
     var mabai = parseInt(req.body.mabai.trim())
-    PhieuXe.search(maphieu,mabai,
-    function(er,results){
-        console.log(results.info)
-        if(err){
-            console.error(err)
-        } else{
-            res.redirect(req.baseUrl + "?dataSuccess=true")
-        }
+    PhieuXe.search(maphieu, mabai,
+        function (er, results) {
+            console.log(results.info)
+            if (err) {
+                console.error(err)
+            } else {
+                res.redirect(req.baseUrl + "?dataSuccess=true")
+            }
 
-    }
+        }
     )
 }
 module.exports = {

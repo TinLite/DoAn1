@@ -1,9 +1,17 @@
 const { pool } = require('../services/mysql')
 
+function getCount(callback) {
+    pool.execute('SELECT COUNT(*) as "COUNT" FROM `bai` WHERE `Trangthai` = 1',
+        function (err, results, fields) {
+            console.log(results)
+            callback(err, results[0].COUNT, fields)
+        })
+}
 
-function getAll(callback) {
-    pool.query(
-        'SELECT * FROM `bai` WHERE `Trangthai` = true LIMIT 5',
+function getAll(callback, page = 1) {
+    pool.execute(
+        'SELECT * FROM `bai` WHERE `Trangthai` = true LIMIT 5 OFFSET ?',
+        [(page - 1) * 5],
         function (err, results) {
             callback(results)
         }
@@ -81,6 +89,7 @@ function search(term, column, callback) {
 }
 
 module.exports = {
+    getCount,
     getAll,
     getOne,
     search,

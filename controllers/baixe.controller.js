@@ -8,9 +8,11 @@ const baixeModel = require('../models/baixe.model')
  */
 function list(req, res) {
     if (!Object.keys(req.query).includes("term")) {
-        baixeModel.getAll((list) => {
-            res.render('bai-list', { danhsachbai: list, success: (req.query.dataSuccess || req.success || false), req: req });
-        })
+        baixeModel.getCount( (err, size) =>
+            baixeModel.getAll((list) => {
+                res.render('bai-list', { danhsachbai: list, success: (req.query.dataSuccess || req.success || false), req: req, size: size });
+            }, (req.query.page ? parseInt(req.query.page) : 1))
+        );
     } else {
         baixeModel.search(req.query.term, req.query.column, (err, results) => {
             res.render('bai-list', { danhsachbai: results, success: (req.query.dataSuccess || req.success || false), req: req });

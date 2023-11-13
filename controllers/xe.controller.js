@@ -9,9 +9,11 @@ const uploadService = require("../services/uploads")
  */
 function list(req, res) {
     if (!Object.keys(req.query).includes("term")) {
-        xemodel.getAll((list) => {
-            res.render("xe-list", { danhsachxe: list, body: req.insertForm, err: req.error_message, success: req.query.dataSuccess || req.success || false, req: req, });
-        });
+        xemodel.getCount((err, size) =>
+            xemodel.getAll((list) => {
+                res.render("xe-list", { danhsachxe: list, body: req.insertForm, err: req.error_message, success: req.query.dataSuccess || req.success || false, req: req, size: size, });
+            }, (req.query.page ? parseInt(req.query.page) : 1))
+        );
     } else {
         xemodel.search(req.query.term, req.query.column,
             function (err, results) {

@@ -7,7 +7,7 @@
             <div id="car-photo" class="p-4 w-1/2">
                 <video id="camera-feed" class="hidden" autoplay></video>
                 {% comment %} <canvas id="camera-result" class="max-w-1/2"></canvas> {% endcomment %}
-                <img alt="Taken image" id="photo-taken" src="{% if data.Hinhanh %}/uploads/{{ data.Hinhanh }}{% else %}https://placehold.jp/320x240.png?text=NO+IMAGE{% endif %}">
+                <img alt="Taken image" id="photo-taken" src="{% if data.Hinhanh %}/uploads/{{ data.Hinhanh }}{% else %}https://placehold.co/320x240.png?text=Kh%C3%B4ng%20c%C3%B3%20%E1%BA%A3nh{% endif %}">
                 <div class="grid">
                     <button id="upload-image" class="border-2 border-black px-4 py-2">Tải ảnh lên</button>
                     <button id="take-image" class="bg-black text-white px-4 py-2">Chụp bằng máy ảnh</button>

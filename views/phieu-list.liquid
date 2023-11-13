@@ -57,10 +57,34 @@
                     </tr>
                 {% else %}
                     <tr class="bg-slate-100">
-                        <td colspan="6">{{ "Không tìm thấy phiếu xe nào." }}</td>
+                        <td colspan="6">Không tìm thấy phiếu xe nào.</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% if not req.query.term %}
+            {% comment %} https://stackoverflow.com/a/27200972 {% endcomment %}
+            {% liquid 
+                assign currentpage = req.query.page | default: 1 | plus: 0
+                assign totalpage = size |  divided_by: 10.0 | ceil
+                assign left = currentpage | minus: 2 | at_least: 1
+                assign right = currentpage | plus: 2 |  at_most: totalpage
+            %}
+            <div class="pt-4 flex justify-between">
+                <div id="table-status">Đang hiển thị {{ danhsachphieu | size }}/{{ size }} tổng số phiếu</div>
+                <div class="grid grid-flow-col">
+                    {% comment %} {{ currentpage }} {% endcomment %}
+                    {% if left != 1 %}
+                        <a href="?page=1" class="p-1 bg-white mx-0 px-2 py-1">&#171;</a>
+                    {% endif %}
+                    {% for i in (left..right) %}
+                    <a href="?page={{ i }}" class="px-2 py-1 bg-white mx-0 block{% if i == currentpage %} border-b-4 border-slate-800 border-solid{% endif %}">{{ i }}</a>
+                    {% endfor %}
+                    {% if right != totalpage %}
+                        <a href="?page={{ totalpage }}" class="p-1 bg-white mx-0 px-2 py-1">&#187;</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
