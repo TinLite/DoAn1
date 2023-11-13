@@ -110,24 +110,32 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% comment %} Chỉ phân trang khi đang không search {% endcomment %}
         {% if not req.query.term %}
         {% comment %} https://stackoverflow.com/a/27200972 {% endcomment %}
         {% liquid 
+            # Tính xem trang hiện tại là trang bao nhiêu
             assign currentpage = req.query.page | default: 1 | plus: 0
+            # Tính tổng số trang (Số kết quả / 5)
             assign totalpage = size |  divided_by: 5.0 | ceil
+            # Tìm số trang nằm bên trái cùng, nếu nó bé hơn 1 thì gán nó = 1
+            # Kiểu, nếu trang hiện tại là trang 2 thì không có tồn tại là trang 0, nên cứ gán nó là 1
             assign left = currentpage | minus: 2 | at_least: 1
+            # Tìm số trang bằn bên phải cùng, nếu nó vượt quá số trang tối đa thì gán lại
             assign right = currentpage | plus: 2 |  at_most: totalpage
         %}
         <div class="pt-4 flex justify-between">
             <div id="table-status">Đang hiển thị {{ danhsachxe | size }}/{{ size }} tổng số xe</div>
             <div class="grid grid-flow-col">
-                {% comment %} {{ currentpage }} {% endcomment %}
+                {% comment %} Nếu hiện tại có hiển thị số trang 1 thì khỏi in ra nút nhảy đến trang đầu {% endcomment %}
                 {% if left != 1 %}
                     <a href="?page=1" class="p-1 bg-white mx-0 px-2 py-1">&#171;</a>
                 {% endif %}
+                {% comment %} Vòng lặp for in số trang {% endcomment %}
                 {% for i in (left..right) %}
                 <a href="?page={{ i }}" class="px-2 py-1 bg-white mx-0 block{% if i == currentpage %} border-b-4 border-slate-800 border-solid{% endif %}">{{ i }}</a>
                 {% endfor %}
+                {% comment %} Nếu hiện tại có hiển thị số trang cuối thì khỏi in ra nút nhảy đến trang cuối {% endcomment %}
                 {% if right != totalpage %}
                     <a href="?page={{ totalpage }}" class="p-1 bg-white mx-0 px-2 py-1">&#187;</a>
                 {% endif %}
