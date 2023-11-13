@@ -20,6 +20,10 @@ function list(req, res) {
     }
 }
 
+function showAddForm(req, res) {
+    res.render('bai-add', { req, err: req.err, body: req.body })
+}
+
 /**
  * POST /
  * Thêm bãi mới
@@ -32,10 +36,10 @@ function insert(req, res) {
         baixeModel.insert(formData,
             function (err) {
                 if (err) { // Nếu database báo lỗi thì show lỗi ra
-                    res.render("bai-list", { err: err.message, body: formData, req: req })
+                    req.err = err.message
+                    showAddForm(req, res)
                 } else { // Ngược lại, redirect về trang chính
-                    req.success = true
-                    list(req, res)
+                    res.redirect(`${req.baseUrl}?dataSuccess=true`)
                 }
             }
         )
@@ -57,12 +61,16 @@ function validate(req, res, next) {
     }
 }
 
+function showAddForm(req, res) {
+    res.render("bai-add", { req, err: req.err, success : req.query.success || req.success })
+}
+
 /**
  * GET detail/:mabai
  * Xem chi tiết bãi
  */
 function detail(req, res) {
-    var mabai = mabai
+    var mabai = req.params.mabai
     baixeModel.getOne(mabai,
         function (err, results) {
             if (results.length == 0) {
@@ -82,7 +90,7 @@ function detail(req, res) {
  * Cập nhật bãi
  */
 function update(req, res) {
-    var mabai = mabai
+    var mabai = req.params.mabai
     var formData = req.body;
     baixeModel.update(mabai, formData,
         function (err) {
@@ -98,7 +106,7 @@ function update(req, res) {
 }
 
 function remove(req, res) {
-    var mabai = mabai
+    var mabai = req.params.mabai
     baixeModel.remove(mabai,
         function (err, results) {
             // TODO fix err handling implementation here
@@ -115,6 +123,7 @@ function remove(req, res) {
 }
 
 module.exports = {
+    showAddForm,
     list,
     validate,
     insert,

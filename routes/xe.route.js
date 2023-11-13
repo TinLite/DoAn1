@@ -4,7 +4,9 @@ const xecontroller = require('../controllers/xe.controller')
 
 router.get('/', xecontroller.list)
 
-router.post('/',xecontroller.insert)
+router.route('/them')
+    .get(xecontroller.showAddForm)
+    .post(xecontroller.insert)
 
 router.route("/detail/:soxe?").get(xecontroller.detail)
 router.post("/detail/:soxe?", xecontroller.update)

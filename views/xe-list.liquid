@@ -7,52 +7,10 @@
         <div class="text-center py-4 bg-white text-2xl">Cập nhật dữ liệu thành công.</div>
     {% endif %}
     <div class="container mx-auto p-4 max-w-2xl">
-        <div class="text-xl py-2 border-b-2 border-gray-900 border-solid">Thêm xe</div>
-        <div class="flex">
-            <div id="car-photo" class="p-4 w-1/2">
-                <video id="camera-feed" autoplay></video>
-                {% comment %} <canvas id="camera-result" class="max-w-1/2"></canvas> {% endcomment %}
-                <img alt="Taken image" id="photo-taken" src="https://cataas.com/cat?width=300&height=200" class="hidden">
-                <div class="grid">
-                    <button id="upload-image" class="border-2 border-black px-4 py-2">Tải ảnh lên</button>
-                    <button id="take-image" class="bg-black text-white px-4 py-2">Chụp bằng máy ảnh</button>
-                </div>
-            </div>
-            <form
-                action=""
-                method="post"
-                class="w-full pt-4"
-                id="thembai">
-                <input
-                    type="hidden"
-                    name="mabai"
-                    id="mabai"
-                    value="{{ body.mabai }}"
-                    placeholder="1234">
-                <label for="soxe" class="block">Số xe</label>
-                <input
-                    type="text"
-                    name="soxe"
-                    id="soxe"
-                    class="w-full"
-                    value="{{ body.soxe }}"
-                    placeholder="65A12345"
-                    required>
-                <label for="mauxe" class="block">Mẫu xe</label>
-                <input
-                    type="text"
-                    name="mauxe"
-                    id="mauxe"
-                    class="w-full"
-                    value="{{ body.mauxe }}"
-                    placeholder="Sh150">
-                <input type="hidden" name="anh" id="anh">
-                <div id="submit-container">
-                    <button type="submit" class="block m-auto bg-black text-white px-4 py-2 mt-2">Thêm</button>
-                </div>
-            </form>
+        <div class="flex justify-between pt-2 border-b-2 border-gray-900 border-solid items-center">
+            <div class="text-xl">Danh sách xe</div>
+            <a class="px-4 py-2 bg-lime-700 text-white" href="{{ req.baseUrl }}/them">Thêm xe mới</a>
         </div>
-        <div class="text-xl py-2 border-b-2 border-gray-900 border-solid ">Danh sách xe</div>
         <div>
             <div id="search-container">
                 <form
@@ -117,7 +75,7 @@
             # Tính xem trang hiện tại là trang bao nhiêu
             assign currentpage = req.query.page | default: 1 | plus: 0
             # Tính tổng số trang (Số kết quả / 5)
-            assign totalpage = size |  divided_by: 5.0 | ceil
+            assign totalpage = size |  divided_by: 10.0 | ceil
             # Tìm số trang nằm bên trái cùng, nếu nó bé hơn 1 thì gán nó = 1
             # Kiểu, nếu trang hiện tại là trang 2 thì không có tồn tại là trang 0, nên cứ gán nó là 1
             assign left = currentpage | minus: 2 | at_least: 1
@@ -143,8 +101,4 @@
         </div>
     {% endif %}
     </div>
-    <script src="/dist/car_camera.js"></script>
-    <script>
-        requestCamAndStreamInVideo(cameraFeed);
-    </script>
 {% endblock %}

@@ -28,33 +28,42 @@ function list(req, res) {
  */
 function insert(req, res) {
     var formData = req.body;
-    // console.log(formData)
-    uploadService.saveBase64Image(
-        formData.anh,
+    var insertfunc = (filename) => xemodel.insertWithHinhanh(
         formData.soxe,
-        (err, filename) => {
+        formData.mauxe,
+        filename,
+        function (err) {
             if (err) {
-                console.error(err);
-                req.error_message = err.message
+                // Nếu database báo lỗi thì show lỗi ra
+                req.err = err.message
+                req.insertForm = formData
+                showAddForm(req, res);
+            } else {
+                req.success = true;
+                showAddForm(req, res);
             }
-            xemodel.insertOne(
-                formData.soxe,
-                formData.mauxe,
-                filename,
-                function (err) {
-                    if (err) {
-                        // Nếu database báo lỗi thì show lỗi ra
-                        req.error_message = err.message
-                        req.insertForm = formData
-                        list(req, res);
-                    } else {
-                        req.success = true;
-                        list(req, res);
-                    }
-                }
-            )
         }
     )
+    // console.log(formData)
+    if (formData.anh && formData.anh.length > 10)
+        uploadService.saveBase64Image(
+            formData.anh,
+            formData.soxe,
+            (err, filename) => {
+                if (err) {
+                    console.error(err);
+                    req.error_message = err.message
+                }
+                insertfunc(filename);
+            }
+        )
+    else {
+        insertfunc(null)
+    }
+}
+
+function showAddForm(req, res) {
+    res.render("xe-add", { req, err: req.err, success: req.success || req.query.success, body: req.body });
 }
 
 /**
@@ -105,7 +114,7 @@ function update(req, res) {
                     console.error(err);
                     req.error_message = err.message
                 }
-                xemodel.update(
+                xemodel.updateWithAnh(
                     soxe,
                     data.mauxe,
                     filename,
@@ -140,6 +149,7 @@ function remove(req, res) {
 }
 module.exports = {
     list,
+    showAddForm,
     insert,
     detail,
     update,

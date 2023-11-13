@@ -59,6 +59,10 @@
                         <td>{{i.Thoigianvao | date: "%Y-%m-%d %H:%M"}}</td>
                         <td>{{i.Thoigianra |date: "%Y-%m-%d %H:%M"}}</td>
                     </tr>
+                {% else %}
+                    <tr class="bg-slate-100">
+                        <td colspan="4">{{ "Không tìm thấy lịch sử gửi." }}</td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
