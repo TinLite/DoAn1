@@ -42,28 +42,33 @@ function insert(req, res) {
     }
 }
 
+function validate(req, res, next) {
+    console.log("VALIDATION!");
+    var mabai = parseInt(req.params.mabai);
+    if (!mabai || mabai < 1) {
+        httpcat(res, 400)
+    } else
+        next();
+}
+
 /**
  * GET detail/:mabai
  * Xem chi tiết bãi
  */
 function detail(req, res) {
     var mabai = parseInt(req.params.mabai.trim())
-    if (!mabai) {
-        httpcat(res, 400)
-    } else {
-        baixeModel.getOne(mabai,
-            function (err, results) {
-                if (results.length == 0) {
-                    httpcat(res, 404)
-                } else if (err) {
-                    console.error(err)
-                    httpcat(res, 500)
-                } else {
-                    res.render("bai-edit", { data: results[0], err: req.err, req: req })
-                }
+    baixeModel.getOne(mabai,
+        function (err, results) {
+            if (results.length == 0) {
+                httpcat(res, 404)
+            } else if (err) {
+                console.error(err)
+                httpcat(res, 500)
+            } else {
+                res.render("bai-edit", { data: results[0], err: req.err, req: req })
             }
-        )
-    }
+        }
+    )
 }
 
 /**
@@ -105,6 +110,7 @@ function remove(req, res) {
 
 module.exports = {
     list,
+    validate,
     insert,
     detail,
     update,
