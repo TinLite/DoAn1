@@ -114,6 +114,7 @@ function insertWithHinhanh(soxe, mauxe, hinhanh, callback) {
         }
     );
 }
+
 module.exports = {
     getCount,
     getAll,

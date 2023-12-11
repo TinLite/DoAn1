@@ -19,6 +19,7 @@
                     id="maphieuvao"
                     value="{{ req.nhanBody.maphieu}}"
                     placeholder="1234"
+                    list="dsmaphieuchuagui"
                     required>
                 <label for="soxevao" class="my-2">Số xe</label>
                 <input
@@ -26,6 +27,7 @@
                     name="soxe"
                     id="soxevao"
                     value="{{ req.nhanBody.soxe }}"
+                    list="dsxechuagui"
                     placeholder="65-AA12222"
                     required>
                 <button type="submit" class="block bg-black text-white px-4 py-2 mt-2">Nhận xe vào</button>
@@ -71,6 +73,7 @@
                     id="maphieura"
                     value="{{ req.xuatBody.maphieu}}"
                     placeholder="1234"
+                    list="dsmaphieudanggui"
                     required>
                 <button type="submit" class="block bg-black text-white px-4 py-2 mt-2">Cho xe ra</button>
             </form>
@@ -101,4 +104,19 @@
             </table>
         </div>
     </div>
+    <datalist id="dsxechuagui">
+    {% for xe in dsxechuagui %}
+        <option value="{{ xe.Soxe }}">
+    {% endfor %}
+    </datalist>
+    <datalist id="dsmaphieuchuagui">
+    {% for phieu in dsmaphieuchuagui %}
+        <option value="{{ phieu.Phieu }}">
+    {% endfor %}
+    </datalist>
+    <datalist id="dsmaphieudanggui">
+    {% for phieu in dsmaphieudanggui %}
+        <option value="{{ phieu.Phieu }}">
+    {% endfor %}
+    </datalist>
 {% endblock %}

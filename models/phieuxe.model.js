@@ -18,6 +18,15 @@ function getAll(callback, page = 1) {
     );
 }
 
+function getAllMaPhieuChuaGuiNoLimit(callback) {
+    pool.execute(
+        'SELECT `Phieu` FROM `Phieuxe` WHERE `Trangthai` = true AND `Phieu` NOT IN (SELECT `Phieu` FROM `gui` WHERE `Thoigianra` IS NULL)',
+        function (err, results) {
+            callback(results)
+        }
+    );
+}
+
 function getAllWithMaBai(soxe, callback) {
     pool.execute('SELECT g.*, b.Mabai FROM phieuxe p, gui g, bai b WHERE p.Phieu = g.Phieu AND b.Mabai = p.Mabai AND g.Soxe = ? ORDER BY g.ID DESC',
         [soxe],
@@ -102,6 +111,7 @@ module.exports = {
     getCount,
     getAll,
     getAllWithMaBai,
+    getAllMaPhieuChuaGuiNoLimit,
     getOne,
     generate,
     update,
