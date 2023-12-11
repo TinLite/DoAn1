@@ -36,12 +36,11 @@ function insert(req, res) {
             if (err) {
                 // Nếu database báo lỗi thì show lỗi ra
                 req.err = err.message
-                req.insertForm = formData
-                showAddForm(req, res);
+                req.insertForm = FormDataEvent
             } else {
                 req.success = true;
-                showAddForm(req, res);
             }
+            showAddForm(req, res);
         }
     )
     // console.log(formData)
