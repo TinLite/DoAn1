@@ -74,7 +74,7 @@
         {% liquid 
             # Tính xem trang hiện tại là trang bao nhiêu
             assign currentpage = req.query.page | default: 1 | plus: 0
-            # Tính tổng số trang (Số kết quả / 5)
+            # Tính tổng số trang (Số kết quả / 10)
             assign totalpage = size |  divided_by: 10.0 | ceil
             # Tìm số trang nằm bên trái cùng, nếu nó bé hơn 1 thì gán nó = 1
             # Kiểu, nếu trang hiện tại là trang 2 thì không có tồn tại là trang 0, nên cứ gán nó là 1
