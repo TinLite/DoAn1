@@ -46,7 +46,7 @@
             <thead class="bg-gray-100 border-b border-gray-300 pt-4">
                 <tr class="">
                     <th class="">Mã phiếu</th>
-                    <th class="">Mã bãi </th>
+                    <th class="">Tên bãi </th>
                     <th class="">Thời gian vào</th>
                     <th class="">Thời gian ra</th>
                 </tr>
@@ -55,7 +55,7 @@
                 {% for i in lichsunhanxe %}  
                     <tr class="hover:bg-slate-100">
                         <td>{{i.Phieu}}</td>
-                        <td>{{i.Mabai}} {{i.Tenbai}}</td>
+                        <td>{{i.Tenbai}}</td>
                         <td>{{i.Thoigianvao | date: "%Y-%m-%d %H:%M"}}</td>
                         <td>{{i.Thoigianra |date: "%Y-%m-%d %H:%M"}}</td>
                     </tr>
