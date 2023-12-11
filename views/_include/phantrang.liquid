@@ -1,0 +1,14 @@
+<div class="pt-4 flex justify-between">
+    <div id="table-status">Đang hiển thị {{ currentsize }}/{{ size }} tổng số {{ noun }}</div>
+    <div class="grid grid-flow-col">
+        {% if left != 1 %}
+            <a href="?page=1" class="p-1 bg-white mx-0 px-2 py-1 hover:bg-gray-200">&#171;</a>
+        {% endif %}
+        {% for i in (left..right) %}
+        <a href="?page={{ i }}" class="px-2 py-1 bg-white mx-0 block hover:bg-gray-200{% if i == currentpage %} border-b-4 border-slate-800 border-solid{% endif %}">{{ i }}</a>
+        {% endfor %}
+        {% if right != totalpage %}
+            <a href="?page={{ totalpage }}" class="p-1 bg-white mx-0 px-2 py-1 hover:bg-gray-200">&#187;</a>
+        {% endif %}
+    </div>
+</div>

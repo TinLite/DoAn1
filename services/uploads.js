@@ -8,7 +8,7 @@ module.exports = {
         var data = raw64Data.split(';base64,');
         // 0 = mime type
         // 1 = base64 data
-        var extension = mime.extension(data[0]);
+        var extension = mime.extension(data[0].split(":")[1]);
         fs.writeFile(
             `${process.env.UPLOAD_FOLDER}${file_name}.${extension}`,
             data[1],
