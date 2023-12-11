@@ -5,7 +5,7 @@ async function requestCamAndStreamInVideo(video) {
         video.srcObject = mediaStream
     }
 }
-
+    
 async function captureScreenshotFromMediaStream(mediaStream) {
     if (!mediaStream || !(mediaStream instanceof MediaStream)) return
 

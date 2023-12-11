@@ -22,6 +22,14 @@ function list(req, res) {
     }
 }
 
+function validate(req,res,next){
+    var soxe = req.params.soxe;
+    if(!soxe){
+        httpcat(res, 400)
+    }else{
+        next();
+    }
+}
 /**
  * POST /
  * Thêm xe mới
@@ -72,10 +80,6 @@ function showAddForm(req, res) {
 function detail(req, res) {
     var soxe = req.params.soxe
     if (!soxe) {
-        return httpcat(res, 400);
-    }
-    var soxe = soxe.trim(); // .params thay số xe = số xe trong bảng ls .trim() xử lý những cách khoảng trống chuỗi thừa 
-    if (soxe.length == 0) {
         return httpcat(res, 400);
     }
     xemodel.getOne(soxe,
@@ -152,5 +156,6 @@ module.exports = {
     insert,
     detail,
     update,
+    validate,
     remove
 };
