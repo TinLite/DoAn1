@@ -48,8 +48,7 @@ function choxevao(req, res) {
                                             if (err) {
                                                 res.render("nhanxe", { err: err.message, body: dataSent, req: req })
                                             } else {
-                                                req.success = true
-                                                list(req, res)
+                                                return choxevao(req, res)
                                             }
                                         })
                                 } else {
