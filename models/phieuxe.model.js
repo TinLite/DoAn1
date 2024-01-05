@@ -47,8 +47,9 @@ function getOne(maphieu, callback) {
         function (err, results, fields) {
             if (err) {
                 console.error(err)
+                return callback(err)
             }
-            callback(results[0])
+            callback(err, results[0])
         }
     );
 }
@@ -68,7 +69,7 @@ function generate(mabai, soluong, callback) {
 }
 function update(maphieu, mabai, callback) {
     pool.execute('UPDATE `Phieuxe` SET `Mabai` = ? WHERE `Phieu` = ?',
-        [mabai,maphieu],
+        [mabai, maphieu],
         function (err, results, fields) {
             // TODO fix err handling implementation here\
             console.log(results.info)
@@ -85,24 +86,24 @@ function remove(maphieu, callback) {
         }
     )
 }
-function search(term,column,callback){
-    switch(column.trim().toLowerCase()){
+function search(term, column, callback) {
+    switch (column.trim().toLowerCase()) {
         case "phieu":
             pool.execute("SELECT * FROM `phieuxe` WHERE `Phieu` = ?",
-            [term],
-            function(err, results){
-                callback(err,results)
-            }
-        )
-        break;
+                [term],
+                function (err, results) {
+                    callback(err, results)
+                }
+            )
+            break;
         case "mabai":
             pool.execute("SELECT * FROM `phieuxe` WHERE `Mabai` = ?",
-            [term],
-            function(err, results){
-                callback(err,results)
-            }
+                [term],
+                function (err, results) {
+                    callback(err, results)
+                }
             )
-        break;
+            break;
     }
 
 }

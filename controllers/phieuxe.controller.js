@@ -76,7 +76,7 @@ function validate(req, res, next) {
  */
 function detail(req, res) {
     var maphieu = req.params.maphieu;
-    PhieuXe.getOne(maphieu, (phieu) => {
+    PhieuXe.getOne(maphieu, (err, phieu) => {
         if (!phieu) {
             httpcat(res, 400)
         } else {

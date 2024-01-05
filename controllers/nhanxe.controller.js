@@ -10,7 +10,7 @@ function list(req, res) {
             nhanXeModel.getDSSoXeChuaGui((dschuagui) => {
                 nhanXeModel.getDSMoiVao((dsmoivao) => {
                     nhanXeModel.getDSMoiRa((dsmoira) => {
-                        res.render('nhanxe', { 
+                        res.render('nhanxe', {
                             req: req,
                             success: (req.query.dataSuccess || req.success || false),
                             err: res.err,
@@ -42,15 +42,21 @@ function choxevao(req, res) {
                     nhanXeModel.insert(dataSent,
                         function (err) {
                             if (err) {
-                                if (err.code === 'ER_NO_REFERENCED_ROW_2') {
-                                    xeModel.insertWithHinhanh(dataSent.soxe, null, null,
-                                        function (err) {
-                                            if (err) {
-                                                res.render("nhanxe", { err: err.message, body: dataSent, req: req })
-                                            } else {
-                                                return choxevao(req, res)
-                                            }
-                                        })
+                                if (err.code === 'ER_NO_REFERENCED_ROW_2') { // FOREIGN KEY FAIL
+                                    phieuXeModel.getOne(dataSent.maphieu, (err, maphieu) => {
+                                        if (!maphieu) {
+                                            res.err = "Mã phiếu không tồn tại."
+                                            return list(req, res)
+                                        }
+                                        xeModel.insertWithHinhanh(dataSent.soxe, null, null,
+                                            function (err) {
+                                                if (err) {
+                                                    res.render("nhanxe", { err: err.message, body: dataSent, req: req })
+                                                } else {
+                                                    return choxevao(req, res)
+                                                }
+                                            })
+                                    })
                                 } else {
                                     res.render("nhanxe", { err: err.message, body: dataSent, req: req })
                                 }

@@ -56,6 +56,8 @@ function insert(newdata, callback) {
         function (err, results, fields) {
             if (!err)
                 console.log(results.info)
+            else
+                console.log(err)
             callback(err)
         }
     )
