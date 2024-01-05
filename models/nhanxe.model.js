@@ -2,7 +2,7 @@ const { pool } = require('../services/mysql')
 
 function getDSMoiVao(callback) {
     pool.query(
-        'SELECT * FROM gui ORDER BY ID DESC LIMIT 5',
+        'SELECT * FROM `gui`,`phieuxe`,`bai` WHERE `gui`.Phieu = `phieuxe`.Phieu AND `phieuxe`.Mabai = `bai`.Mabai AND `gui`.Thoigianra IS NULL ORDER BY ID DESC LIMIT 5',
         function (err, results) {
             callback(results)
         }
